@@ -1,13 +1,13 @@
 <?php
 
-use App\Traits\BaseModelSoftDelete;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use App\Traits\BaseModelSoftDeleteDefault;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
-    use BaseModelSoftDelete;
+    use BaseModelSoftDeleteDefault;
     /**
      * Run the migrations.
      */
