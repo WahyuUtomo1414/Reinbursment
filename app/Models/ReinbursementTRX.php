@@ -28,4 +28,9 @@ class ReinbursementTRX extends Model
     {
         return $this->belongsTo(Status::class, 'status_id');
     }
+
+    public function detailReinbursement()
+    {
+        return $this->hasMany(ReinbursementDetail::class, 'id_reinbursement_trx');
+    }
 }
