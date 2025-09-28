@@ -15,20 +15,15 @@ class CategoryForm
             ->components([
                 TextInput::make('name')
                     ->required(),
-                Textarea::make('description')
-                    ->columnSpanFull(),
                 TextInput::make('limit')
                     ->required()
                     ->numeric()
+                    ->prefix('Rp. ')
                     ->default(0),
+                Textarea::make('description')
+                    ->columnSpanFull(),
                 Toggle::make('active')
                     ->required(),
-                TextInput::make('created_by')
-                    ->numeric(),
-                TextInput::make('updated_by')
-                    ->numeric(),
-                TextInput::make('deleted_by')
-                    ->numeric(),
             ]);
     }
 }
