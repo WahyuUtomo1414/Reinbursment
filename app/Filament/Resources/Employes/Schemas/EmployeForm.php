@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Employes\Schemas;
 
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
 
 class EmployeForm
 {
@@ -18,17 +20,31 @@ class EmployeForm
                     ->required(),
                 TextInput::make('personal_number')
                     ->required(),
-                TextInput::make('id_position')
+                Select::make('id_position')
                     ->required()
-                    ->numeric(),
+                    ->options(\App\Models\Position::all()->pluck('name', 'id')->toArray())
+                    ->label('Position'),
                 Toggle::make('active')
                     ->required(),
-                TextInput::make('created_by')
-                    ->numeric(),
-                TextInput::make('updated_by')
-                    ->numeric(),
-                TextInput::make('deleted_by')
-                    ->numeric(),
-            ]);
+                Section::make('User Account')
+                    ->relationship('user') // relasi hasOne ke User
+                    ->schema([
+                        TextInput::make('name')
+                            ->label('Username')
+                            ->required(),
+
+                        TextInput::make('email')
+                            ->email()
+                            ->unique(ignoreRecord: true)
+                            ->required(),
+
+                        TextInput::make('password')
+                            ->password()
+                            ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
+                            ->required(fn (string $context): bool => $context === 'create'),
+                    ])
+                    ->columns(3)
+                    ->columnSpanFull(),
+        ]);
     }
 }
