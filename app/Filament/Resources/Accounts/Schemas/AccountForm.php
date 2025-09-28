@@ -17,19 +17,15 @@ class AccountForm
                     ->options(['bank' => 'Bank', 'e-wallet' => 'E wallet'])
                     ->required(),
                 TextInput::make('provider')
+                    ->label('Provider (Bank/E wallet name)')
                     ->required(),
                 TextInput::make('account_name')
                     ->required(),
                 TextInput::make('account_number')
-                    ->required(),
+                    ->required()
+                    ->maxLength(20),
                 Toggle::make('active')
                     ->required(),
-                TextInput::make('created_by')
-                    ->numeric(),
-                TextInput::make('updated_by')
-                    ->numeric(),
-                TextInput::make('deleted_by')
-                    ->numeric(),
             ]);
     }
 }
