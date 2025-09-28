@@ -19,7 +19,9 @@ class AccountsTable
         return $table
             ->columns([
                 TextColumn::make('type')
-                    ->badge(),
+                    ->badge()
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('provider')
                     ->searchable(),
                 TextColumn::make('account_name')
@@ -28,15 +30,12 @@ class AccountsTable
                     ->searchable(),
                 IconColumn::make('active')
                     ->boolean(),
-                TextColumn::make('created_by')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('updated_by')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('deleted_by')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('createdBy.name')
+                    ->label('Created By'),
+                TextColumn::make('updatedBy.name')
+                    ->label("Updated by"),
+                TextColumn::make('deletedBy.name')
+                    ->label("Deleted by"),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
