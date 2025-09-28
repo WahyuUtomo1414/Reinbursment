@@ -2,9 +2,13 @@
 
 namespace App\Filament\Resources\Users\Schemas;
 
+use App\Models\Employe;
+use App\Models\Position;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Section;
@@ -22,36 +26,16 @@ class UserForm
                     ->label('Email address')
                     ->email()
                     ->required(),
+                Select::make('id_employe')
+                    ->label('Employee')
+                    ->options(Employe::all()->pluck('name', 'id'))
+                    ->searchable()
+                    ->required(),
                 TextInput::make('password')
                     ->password()
                     ->required(),
                 Toggle::make('active')
                     ->required(),
-
-                Section::make('Employee Information')
-                ->schema([
-                    TextInput::make('employe.name')
-                        ->label('Name')
-                        ->required(),
-
-                    TextInput::make('employe.nik')
-                        ->label('NIK')
-                        ->required(),
-
-                    TextInput::make('employe.personal_number')
-                        ->label('Personal Number'),
-
-                    Select::make('employe.position_id')
-                        ->label('Position')
-                        ->relationship('employe.position', 'name')
-                        ->searchable()
-                        ->preload()
-                        ->createOptionForm([
-                            TextInput::make('name')
-                                ->required(),
-                            Textarea::make('description'),
-                        ]),
-                ])->columnSpanFull()->columns(2),
             ]);
     }
 }

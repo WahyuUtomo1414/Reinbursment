@@ -18,4 +18,9 @@ class Employe extends Model
     {
         return $this->belongsTo(Position::class, 'id_position');
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id_employe');
+    }
 }
