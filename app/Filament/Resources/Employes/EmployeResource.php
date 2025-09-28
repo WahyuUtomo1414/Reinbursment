@@ -29,7 +29,7 @@ class EmployeResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Employe';
 
-    protected static string | UnitEnum | null $navigationGroup = 'Data EMploye';
+    protected static string | UnitEnum | null $navigationGroup = 'Data Employe';
 
     public static function form(Schema $schema): Schema
     {
