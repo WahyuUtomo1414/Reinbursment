@@ -14,17 +14,12 @@ class StatusTypeForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->columnSpanFull()  
                     ->required(),
                 Textarea::make('description')
                     ->columnSpanFull(),
                 Toggle::make('active')
                     ->required(),
-                TextInput::make('created_by')
-                    ->numeric(),
-                TextInput::make('updated_by')
-                    ->numeric(),
-                TextInput::make('deleted_by')
-                    ->numeric(),
             ]);
     }
 }
