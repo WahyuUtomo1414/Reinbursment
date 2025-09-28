@@ -13,4 +13,9 @@ class StatusType extends Model
     use HasFactory, Notifiable, AuditedBySoftDelete, SoftDeletes;
     protected $table = 'status_type';
     protected $guarded = ['id'];
+
+    public function status()
+    {
+        return $this->hasMany(Status::class);
+    }
 }
