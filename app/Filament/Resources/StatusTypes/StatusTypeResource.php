@@ -15,14 +15,19 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class StatusTypeResource extends Resource
 {
     protected static ?string $model = StatusType::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ArchiveBox;
+
+    protected static ?string $navigationLabel = 'Status Type';
 
     protected static ?string $recordTitleAttribute = 'StatusType';
+
+    protected static string | UnitEnum | null $navigationGroup = 'Data Master';
 
     public static function form(Schema $schema): Schema
     {
