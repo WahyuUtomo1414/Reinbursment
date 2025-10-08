@@ -79,6 +79,7 @@ class UserSeeder extends Seeder
                 'nik' => $emp['nik'],
                 'id_position' => $emp['id_position'],
                 'personal_number' => $emp['personal_number'],
+                'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -89,6 +90,7 @@ class UserSeeder extends Seeder
                 'email' => $emp['user']['email'],
                 'password' => Hash::make($emp['user']['password']),
                 'id_employe' => $employeId,
+                'created_by' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
