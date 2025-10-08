@@ -23,6 +23,7 @@ class StatusTypeSeeder extends Seeder
             DB::table('status_type')->insert([
                 'name' => $type['name'],
                 'description' => $type['description'],
+                'created_by' => 1,
             ]);
         }
     }

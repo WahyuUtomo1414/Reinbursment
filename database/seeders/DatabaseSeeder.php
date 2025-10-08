@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             PositionSeeder::class,
             UserSeeder::class,
             StatusTypeSeeder::class,
-            //StatusSeeder::class,
+            StatusSeeder::class,
     ]);
     }
 }
