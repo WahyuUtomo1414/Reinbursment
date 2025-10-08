@@ -15,14 +15,19 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class DivisionResource extends Resource
 {
     protected static ?string $model = Division::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
+
+    protected static ?string $navigationLabel = 'Division';
 
     protected static ?string $recordTitleAttribute = 'Division';
+
+    protected static string | UnitEnum | null $navigationGroup = 'Data Master';
 
     public static function form(Schema $schema): Schema
     {
