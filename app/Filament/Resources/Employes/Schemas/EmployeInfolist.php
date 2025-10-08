@@ -3,9 +3,11 @@
 namespace App\Filament\Resources\Employes\Schemas;
 
 use App\Models\Employe;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Schemas\Schema;
 
 class EmployeInfolist
 {
@@ -16,28 +18,33 @@ class EmployeInfolist
                 TextEntry::make('name'),
                 TextEntry::make('nik'),
                 TextEntry::make('personal_number'),
-                TextEntry::make('id_position')
-                    ->numeric(),
+                TextEntry::make('position.name')
+                    ->label('Position'),
                 IconEntry::make('active')
                     ->boolean(),
-                TextEntry::make('created_by')
-                    ->numeric()
-                    ->placeholder('-'),
-                TextEntry::make('updated_by')
-                    ->numeric()
-                    ->placeholder('-'),
-                TextEntry::make('deleted_by')
-                    ->numeric()
-                    ->placeholder('-'),
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('deleted_at')
-                    ->dateTime()
-                    ->visible(fn (Employe $record): bool => $record->trashed()),
+                
+                Section::make('Data Information')
+                    ->schema([
+                        TextEntry::make('createdBy.name')
+                            ->label('Created By'),
+                        TextEntry::make('updatedBy.name')
+                            ->label("Updated by"),
+                        TextEntry::make('deletedBy.name')
+                            ->label("Deleted by"),
+                    ])->columns(3)->columnSpanFull()->collapsible(),
+
+                Section::make('Timestamps')
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                TextEntry::make('created_at')
+                                    ->label('Created At')
+                                    ->dateTime('d/m/Y H:i'),
+                                TextEntry::make('updated_at')
+                                    ->label('Last Updated')
+                                    ->dateTime('d/m/Y H:i'),
+                            ]),
+                    ])->columnSpanFull()->collapsible(),
             ]);
     }
 }
