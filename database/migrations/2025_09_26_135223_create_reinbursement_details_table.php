@@ -1,11 +1,13 @@
 <?php
 
+use App\Traits\BaseModelSoftDeleteDefault;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    use BaseModelSoftDeleteDefault;
     /**
      * Run the migrations.
      */
@@ -19,7 +21,7 @@ return new class extends Migration
             $table->double('amount')->default(0);
             $table->string('image', 128)->nullable();
             $table->text('note')->nullable();
-            $table->timestamps();
+            $this->base($table);
         });
     }
 

@@ -5,12 +5,16 @@ namespace App\Filament\Resources\ReinbursementTRXES\Schemas;
 use App\Models\Status;
 use App\Models\Account;
 use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 
 class ReinbursementTRXForm
 {
@@ -31,6 +35,40 @@ class ReinbursementTRXForm
                     })
                     ->required()
                     ->columnSpanFull(),
+
+                    Section::make('Detail Reinbursement')
+                        ->description('Add reinbursement details here')
+                        ->icon(Heroicon::CurrencyDollar)
+                        ->schema([
+                            Repeater::make('details')
+                                ->label('Reinbursement')
+                                ->relationship('detailReinbursement')
+                                ->schema([
+                                    Select::make('id_category')
+                                        ->label('Category')
+                                        ->options(function () {
+                                            return \App\Models\Category::all()->pluck('name', 'id');
+                                        })
+                                        ->required(),
+                                    TextInput::make('name')
+                                        ->label('Reinbursement Name')
+                                        ->required()
+                                        ->maxLength(255),
+                                    TextInput::make('amount')
+                                        ->required()
+                                        ->numeric()
+                                        ->prefix('Rp. ')
+                                        ->default(0),
+                                    FileUpload::make('image')
+                                        ->label('Image URL')
+                                        ->directory('reinbursement')
+                                        ->image(),
+                                    Textarea::make('note')
+                                        ->maxLength(65535)
+                                        ->columnSpanFull(),
+                                ])->columns(2),
+                        ])
+                        ->columnSpanFull(),
                 Hidden::make('id_employe')
                     ->label('Employee')
                     ->required()
