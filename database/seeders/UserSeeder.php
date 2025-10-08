@@ -14,19 +14,11 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Buat data posisi Super Admin
-        $positionId = DB::table('position')->insertGetId([
-            'name' => 'Super Admin',
-            'description' => 'User dengan akses penuh ke sistem',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
         // Buat data employe
         $employeId = DB::table('employe')->insertGetId([
             'name' => 'Administrator',
             'nik' => '0000000001',
-            'id_position' => $positionId,
+            'id_position' => 1,
             'personal_number' => '1234567890',
             'created_at' => now(),
             'updated_at' => now(),
