@@ -17,14 +17,19 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class ReinbursementTRXResource extends Resource
 {
     protected static ?string $model = ReinbursementTRX::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::DocumentCurrencyDollar;
 
-    protected static ?string $recordTitleAttribute = 'ReinbursementTRX';
+    protected static string | UnitEnum | null $navigationGroup = 'Data Reinbursement';
+
+    protected static ?string $navigationLabel = 'Reinbursement';
+
+    protected static ?string $recordTitleAttribute = 'Reinbursement';
 
     public static function form(Schema $schema): Schema
     {
