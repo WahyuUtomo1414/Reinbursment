@@ -77,7 +77,7 @@ class ReinbursementTRXResource extends Resource
         $roles = $user->roles->pluck('name')->toArray(); // ambil semua role nama
 
         // Super Admin & Finance bisa lihat semua
-        if (in_array('Super Admin', $roles) || in_array('Finance', $roles)) {
+        if (in_array('super_admin', $roles) || in_array('Finance', $roles)) {
             return $query;
         }
 
