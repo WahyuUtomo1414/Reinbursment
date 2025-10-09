@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources\ReinbursementTRXES\Schemas;
 
-use App\Models\ReinbursementTRX;
-use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
+use App\Models\ReinbursementTRX;
+use Filament\Support\Icons\Heroicon;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Infolists\Components\TextEntry;
 
 class ReinbursementTRXInfolist
 {
@@ -12,40 +15,59 @@ class ReinbursementTRXInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('id_account')
-                    ->numeric(),
-                TextEntry::make('id_employe')
-                    ->numeric(),
+                TextEntry::make('account.account_name')
+                    ->label('Account Name'),
+                TextEntry::make('employe.name')
+                    ->label('Employe Name'),
                 TextEntry::make('total_amount')
-                    ->numeric(),
+                    ->numeric()
+                    ->prefix('Rp ')
+                    ->label('Total Amount')
+                    ->formatStateUsing(fn (string $state): string => number_format($state)),
                 TextEntry::make('note')
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('approve_by')
-                    ->placeholder('-'),
+                    ->label('Approved By')
+                    ->placeholder('-')
+                    ->getStateUsing(function ($record) {
+                        return optional($record->employe)->name ?? '-';
+                    }),
                 TextEntry::make('approve_at')
                     ->date()
                     ->placeholder('-'),
-                TextEntry::make('status_id')
-                    ->numeric(),
-                TextEntry::make('created_by')
-                    ->numeric()
-                    ->placeholder('-'),
-                TextEntry::make('updated_by')
-                    ->numeric()
-                    ->placeholder('-'),
-                TextEntry::make('deleted_by')
-                    ->numeric()
-                    ->placeholder('-'),
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('deleted_at')
-                    ->dateTime()
-                    ->visible(fn (ReinbursementTRX $record): bool => $record->trashed()),
+                TextEntry::make('status.name')
+                    ->label('Status')
+                    ->badge(),
+                Section::make('Data Tracked')
+                    ->icon(Heroicon::ArchiveBox)
+                    ->schema([
+                        Grid::make(3)
+                            ->schema([
+                                TextEntry::make('createdBy.name')
+                                    ->label('Created By')
+                                    ->placeholder('-'),
+                                TextEntry::make('updatedBy.name')
+                                    ->label('Updated By')
+                                    ->placeholder('-'),
+                                TextEntry::make('deletedBy.name')
+                                    ->label('Deleted By')
+                                    ->placeholder('-'),
+                            ]),
+                ])->columnSpanFull()->collapsible(),
+                Section::make('Timestamps')
+                    ->icon(Heroicon::Clock)
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                TextEntry::make('created_at')
+                                    ->label('Created At')
+                                    ->dateTime('d/F/Y H:i'),
+                                TextEntry::make('updated_at')
+                                    ->label('Last Updated')
+                                    ->dateTime('d/F/Y H:i'),
+                            ]),
+                ])->columnSpanFull()->collapsible(),
             ]);
     }
 }
