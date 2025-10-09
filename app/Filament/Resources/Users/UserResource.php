@@ -2,22 +2,23 @@
 
 namespace App\Filament\Resources\Users;
 
-use App\Filament\Resources\Users\Pages\CreateUser;
-use App\Filament\Resources\Users\Pages\EditUser;
-use App\Filament\Resources\Users\Pages\ListUsers;
-use App\Filament\Resources\Users\Pages\ViewUser;
-use App\Filament\Resources\Users\Schemas\UserForm;
-use App\Filament\Resources\Users\Schemas\UserInfolist;
-use App\Filament\Resources\Users\Tables\UsersTable;
-use App\Models\User;
-use BackedEnum;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use UnitEnum;
+use BackedEnum;
+use App\Models\User;
+use Filament\Tables\Table;
+use Filament\Schemas\Schema;
+use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\Users\Pages\EditUser;
+use App\Filament\Resources\Users\Pages\ViewUser;
+use App\Filament\Resources\Users\Pages\ListUsers;
+use App\Filament\Resources\Users\Pages\CreateUser;
+use App\Filament\Resources\Users\Schemas\UserForm;
+use App\Filament\Resources\Users\Tables\UsersTable;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\Users\Schemas\UserInfolist;
 
 class UserResource extends Resource
 {
@@ -63,11 +64,16 @@ class UserResource extends Resource
         ];
     }
 
-    public static function getRecordRouteBindingEloquentQuery(): Builder
+    public static function getEloquentQuery(): Builder
     {
-        return parent::getRecordRouteBindingEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+        $query = parent::getEloquentQuery()
+            ->withoutGlobalScopes([SoftDeletingScope::class]); // hapus soft delete scope
+
+        // jika bukan super admin, batasi hanya user sendiri
+        if (!Auth::user()?->role?->name === 'Super Admin') {
+            $query->where('id', Auth::id());
+        }
+
+        return $query;
     }
 }
