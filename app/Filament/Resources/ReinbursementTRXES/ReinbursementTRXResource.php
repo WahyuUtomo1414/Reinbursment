@@ -2,22 +2,23 @@
 
 namespace App\Filament\Resources\ReinbursementTRXES;
 
-use App\Filament\Resources\ReinbursementTRXES\Pages\CreateReinbursementTRX;
-use App\Filament\Resources\ReinbursementTRXES\Pages\EditReinbursementTRX;
-use App\Filament\Resources\ReinbursementTRXES\Pages\ListReinbursementTRXES;
-use App\Filament\Resources\ReinbursementTRXES\Pages\ViewReinbursementTRX;
-use App\Filament\Resources\ReinbursementTRXES\Schemas\ReinbursementTRXForm;
-use App\Filament\Resources\ReinbursementTRXES\Schemas\ReinbursementTRXInfolist;
-use App\Filament\Resources\ReinbursementTRXES\Tables\ReinbursementTRXESTable;
-use App\Models\ReinbursementTRX;
+use UnitEnum;
 use BackedEnum;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Filament\Schemas\Schema;
+use App\Models\ReinbursementTRX;
+use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use UnitEnum;
+use App\Filament\Resources\ReinbursementTRXES\Pages\EditReinbursementTRX;
+use App\Filament\Resources\ReinbursementTRXES\Pages\ViewReinbursementTRX;
+use App\Filament\Resources\ReinbursementTRXES\Pages\CreateReinbursementTRX;
+use App\Filament\Resources\ReinbursementTRXES\Pages\ListReinbursementTRXES;
+use App\Filament\Resources\ReinbursementTRXES\Schemas\ReinbursementTRXForm;
+use App\Filament\Resources\ReinbursementTRXES\Tables\ReinbursementTRXESTable;
+use App\Filament\Resources\ReinbursementTRXES\Schemas\ReinbursementTRXInfolist;
 
 class ReinbursementTRXResource extends Resource
 {
@@ -63,12 +64,38 @@ class ReinbursementTRXResource extends Resource
         ];
     }
 
-    public static function getRecordRouteBindingEloquentQuery(): Builder
+    public static function getEloquentQuery(): Builder
     {
-        return parent::getRecordRouteBindingEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+        $query = parent::getEloquentQuery()
+            ->withoutGlobalScopes([SoftDeletingScope::class]);
+
+        if (!Auth::check()) {
+            return $query; // jika tidak login, tetap kembalikan query kosong
+        }
+
+        $user = Auth::user();
+        $roles = $user->roles->pluck('name')->toArray(); // ambil semua role nama
+
+        // Super Admin & Finance bisa lihat semua
+        if (in_array('Super Admin', $roles) || in_array('Finance', $roles)) {
+            return $query;
+        }
+
+        // Division Master
+        if (in_array('Division Master', $roles)) {
+            $userDivisionId = $user->employe?->id_divisi;
+            if ($userDivisionId) {
+                $query->whereHas('createdBy.employe', function ($q) use ($userDivisionId) {
+                    $q->where('id_divisi', $userDivisionId);
+                });
+            }
+            return $query;
+        }
+
+        // Employee biasa
+        $query->where('created_by', $user->id);
+
+        return $query;
     }
 
     public static function getNavigationBadge(): ?string
