@@ -67,11 +67,13 @@ class UserResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery()
-            ->withoutGlobalScopes([SoftDeletingScope::class]); // hapus soft delete scope
+            ->withoutGlobalScopes([SoftDeletingScope::class]);
 
         // jika bukan super admin, batasi hanya user sendiri
-        if (!Auth::user()?->role?->name === 'Super Admin') {
-            $query->where('id', Auth::id());
+        if (Auth::check()) {
+            if (Auth::user()->roles !== 'Super Admin') {
+                $query->where('id', Auth::id());
+            }
         }
 
         return $query;

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Users\Schemas;
 use App\Models\Employe;
 use App\Models\Position;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
@@ -31,6 +32,10 @@ class UserForm
                     ->options(Employe::all()->pluck('name', 'id'))
                     ->searchable()
                     ->required(),
+                Select::make('roles')
+                    ->label('Role')
+                    ->relationship('roles', 'name')
+                    ->visible(in_array(Auth::user()->roles->first()->id ?? null, [4])),
                 TextInput::make('password')
                     ->password()
                     ->required(),
