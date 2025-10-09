@@ -69,10 +69,13 @@ class UserResource extends Resource
         $query = parent::getEloquentQuery()
             ->withoutGlobalScopes([SoftDeletingScope::class]);
 
-        // jika bukan super admin, batasi hanya user sendiri
         if (Auth::check()) {
-            if (Auth::user()->roles !== 'Super Admin') {
-                $query->where('id', Auth::id());
+            $user = Auth::user();
+            $roleNames = $user->roles->pluck('name')->toArray(); // ambil semua role nama
+
+            if (!in_array('super_admin', $roleNames)) {
+                // user bukan Super Admin, batasi hanya data sendiri
+                $query->where('id', $user->id);
             }
         }
 
