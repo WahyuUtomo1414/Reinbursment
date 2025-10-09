@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ReinbursementTRXES\Schemas;
 
 use App\Models\Status;
 use App\Models\Account;
+use App\Models\Category;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
@@ -49,16 +50,32 @@ class ReinbursementTRXForm
                                         ->options(function () {
                                             return \App\Models\Category::all()->pluck('name', 'id');
                                         })
-                                        ->required(),
+                                        ->required()
+                                        ->reactive(),
                                     TextInput::make('name')
                                         ->label('Reinbursement Name')
                                         ->required()
                                         ->maxLength(255),
                                     TextInput::make('amount')
+                                        ->label('Amount')
                                         ->required()
-                                        ->numeric()
                                         ->prefix('Rp. ')
-                                        ->default(0),
+                                        ->default(0)
+                                        ->rule(function ($get) {
+                                            $categoryId = $get('id_category');
+                                            if (!$categoryId) return ['required'];
+
+                                            $limit = \App\Models\Category::find($categoryId)?->limit ?? 0;
+                                            // method untuk kasih limit amount 
+                                            return [
+                                                'required',
+                                                'lte:' . $limit, 
+                                            ];
+                                        })
+                                        ->helperText(fn ($get) => $get('id_category')
+                                            ? 'Max: Rp. ' . number_format(\App\Models\Category::find($get('id_category'))->limit, 0, ',', '.')
+                                            : ''
+                                    ),
                                     FileUpload::make('image')
                                         ->label('Image URL')
                                         ->disk('public')
