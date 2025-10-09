@@ -69,6 +69,34 @@ class ReinbursementTRXForm
                                 ])->columns(2),
                         ])
                         ->columnSpanFull(),
+                Section::make('Detail Payment')
+                        ->description('Add reinbursement payment here')
+                        ->icon(Heroicon::CurrencyDollar)
+                        ->schema([
+                            Repeater::make('payment')
+                                ->label('Payment')
+                                ->relationship('paymentReinbursement')
+                                ->schema([
+                                    FileUpload::make('image')
+                                        ->label('Image Payment')
+                                        ->directory('reinbursement_payment')
+                                        ->image()
+                                        ->columnSpanFull(),
+                                    Textarea::make('note')
+                                        ->columnSpanFull(),
+                                    Select::make('status_id')
+                                        ->required()
+                                        ->label('Status')
+                                        ->default(4)
+                                        ->options(
+                                                Status::whereHas('statusType', function ($query) {
+                                                    $query->where('id', 2);
+                                                })->pluck('name', 'id')
+                                            )  
+                                        ->columnSpanFull(),
+                                ])->columns(2)->minItems(1),
+                        ])
+                        ->columnSpanFull(),
                 Hidden::make('id_employe')
                     ->label('Employee')
                     ->required()

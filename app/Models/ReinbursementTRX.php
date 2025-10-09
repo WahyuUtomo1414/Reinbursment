@@ -33,4 +33,9 @@ class ReinbursementTRX extends Model
     {
         return $this->hasMany(ReinbursementDetail::class, 'id_reinbursement_trx');
     }
+
+    public function paymentReinbursement()
+    {
+        return $this->hasOne(ReinbursementPayment::class, 'id_reinbursement_trx');
+    }
 }

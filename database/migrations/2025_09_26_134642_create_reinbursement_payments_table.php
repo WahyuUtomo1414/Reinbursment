@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('reinbursement_payment', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_reinbursement_trx')->constrained('reinbursement_trx');
-            $table->string('image', 128);
+            $table->string('image', 128)->nullable();
             $table->text('note')->nullable();
             $this->base($table);
         });
