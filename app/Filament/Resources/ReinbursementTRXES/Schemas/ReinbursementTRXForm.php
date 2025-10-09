@@ -61,6 +61,7 @@ class ReinbursementTRXForm
                                         ->default(0),
                                     FileUpload::make('image')
                                         ->label('Image URL')
+                                        ->disk('public')
                                         ->directory('reinbursement')
                                         ->image(),
                                     Textarea::make('note')
@@ -79,6 +80,7 @@ class ReinbursementTRXForm
                                 ->schema([
                                     FileUpload::make('image')
                                         ->label('Image Payment')
+                                        ->disk('public')
                                         ->directory('reinbursement_payment')
                                         ->image()
                                         ->columnSpanFull(),
