@@ -83,13 +83,18 @@ class ReinbursementTRXForm
                     ->columnSpanFull(),
                 Textarea::make('note')
                     ->columnSpanFull(),
-                TextInput::make('approve_by'),
-                DatePicker::make('approve_at'),
                 Select::make('status_id')
                     ->required()
                     ->label('Status')
-                    ->options(Status::all()->pluck('name', 'id'))
+                    ->default(7)
+                    ->options(
+                            Status::whereHas('statusType', function ($query) {
+                                $query->where('id', 3);
+                            })->pluck('name', 'id')
+                        )  
                     ->columnSpanFull(),
+                Hidden::make('approve_by'),
+                Hidden::make('approve_at'),
             ]);
     }
 }

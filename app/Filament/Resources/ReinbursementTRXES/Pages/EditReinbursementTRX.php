@@ -2,12 +2,13 @@
 
 namespace App\Filament\Resources\ReinbursementTRXES\Pages;
 
-use App\Filament\Resources\ReinbursementTRXES\ReinbursementTRXResource;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\ForceDeleteAction;
-use Filament\Actions\RestoreAction;
 use Filament\Actions\ViewAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\RestoreAction;
+use Illuminate\Support\Facades\Auth;
+use Filament\Actions\ForceDeleteAction;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Resources\ReinbursementTRXES\ReinbursementTRXResource;
 
 class EditReinbursementTRX extends EditRecord
 {
@@ -21,5 +22,16 @@ class EditReinbursementTRX extends EditRecord
             ForceDeleteAction::make(),
             RestoreAction::make(),
         ];
+    }
+
+    //Method Untuk Handle Approve Otomatis
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        if (($data['status_id'] ?? null) == 8) {
+            $data['approve_by'] = Auth::id();
+            $data['approve_at'] = now();
+        }
+
+        return $data;
     }
 }
