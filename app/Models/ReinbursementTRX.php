@@ -36,6 +36,6 @@ class ReinbursementTRX extends Model
 
     public function paymentReinbursement()
     {
-        return $this->hasOne(ReinbursementPayment::class, 'id_reinbursement_trx');
+        return $this->hasMany(ReinbursementPayment::class, 'id_reinbursement_trx');
     }
 }

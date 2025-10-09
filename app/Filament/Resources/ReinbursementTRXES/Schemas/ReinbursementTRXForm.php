@@ -96,7 +96,7 @@ class ReinbursementTRXForm
                                                 })->pluck('name', 'id')
                                             )  
                                         ->columnSpanFull(),
-                                ])->columns(2)->minItems(1),
+                                ])->columns(2)->maxItems(1),
                         ])
                         ->columnSpanFull(),
                 Hidden::make('id_employe')

@@ -7,9 +7,10 @@ use App\Models\ReinbursementTRX;
 use Filament\Support\Icons\Heroicon;
 use Filament\Schemas\Components\Grid;
 use Filament\Forms\Components\Repeater;
-use Filament\Infolists\Components\ImageEntry;
+use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Components\Section;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
 
 class ReinbursementTRXInfolist
@@ -47,6 +48,7 @@ class ReinbursementTRXInfolist
                                 ImageEntry::make('image')
                                     ->label('Image')
                                     ->disk('public')
+                                    ->imagesize(140)
                                     ->getStateUsing(fn ($record) => $record->image ? asset('storage/' . $record->image) : '-')
                                     ->disabled(),
                                 
@@ -56,9 +58,37 @@ class ReinbursementTRXInfolist
                                     ->disabled(),
                             ])
                             ->columns(5)
-                            ->disabled(), // seluruh repeater read-only
+                            ->disabled(),
                     ])
                     ->columns(1)
+                    ->columnSpanFull(),
+                    
+                Section::make('Detail Payment')
+                    ->description('Reimbursement payments')
+                    ->icon(Heroicon::CurrencyDollar)
+                    ->schema([
+                        Repeater::make('paymentReinbursement')
+                            ->relationship('paymentReinbursement')
+                            ->schema([
+                                ImageEntry::make('image')
+                                    ->label('Image')
+                                    ->disk('public')
+                                    ->getStateUsing(fn ($record) => $record->image ? asset('storage/' . $record->image) : '-')
+                                    ->disabled(),
+
+                                TextEntry::make('note')
+                                    ->label('Note')
+                                    ->disabled()
+                                    ->getStateUsing(fn ($record) => $record->note ?? '-'),
+
+                                TextEntry::make('status.name')
+                                    ->label('Status')
+                                    ->disabled()
+                                    ->getStateUsing(fn ($record) => optional($record->status)->name ?? '-'),
+                            ])
+                            ->columns(2)
+                            ->disabled(),
+                    ])
                     ->columnSpanFull(),
 
                 TextEntry::make('total_amount')
