@@ -18,22 +18,15 @@ class ReinbursementTRXESTable
     {
         return $table
             ->columns([
-                TextColumn::make('id_account')
-                    ->numeric()
+                TextColumn::make('account.account_number')  
                     ->sortable(),
-                TextColumn::make('id_employe')
-                    ->numeric()
+                TextColumn::make('employe.name')
                     ->sortable(),
                 TextColumn::make('total_amount')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('approve_by')
-                    ->searchable(),
-                TextColumn::make('approve_at')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('status_id')
-                    ->numeric()
+                TextColumn::make('status.name')
+                    ->badge('info')
                     ->sortable(),
                 TextColumn::make('createdBy.name')
                     ->label('Created By'),
