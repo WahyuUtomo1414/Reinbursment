@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ReinbursementTRXES\Schemas;
 use App\Models\Status;
 use App\Models\Account;
 use App\Models\Category;
+use Filament\Support\RawJs;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
@@ -44,49 +45,52 @@ class ReinbursementTRXForm
                             Repeater::make('details')
                                 ->label('Reinbursement')
                                 ->relationship('detailReinbursement')
+                                ->columns(2)
                                 ->schema([
                                     Select::make('id_category')
                                         ->label('Category')
-                                        ->options(function () {
-                                            return \App\Models\Category::all()->pluck('name', 'id');
-                                        })
+                                        ->options(fn () => \App\Models\Category::all()->pluck('name', 'id'))
                                         ->required()
                                         ->reactive(),
+
                                     TextInput::make('name')
                                         ->label('Reinbursement Name')
                                         ->required()
                                         ->maxLength(255),
+
                                     TextInput::make('amount')
                                         ->label('Amount')
                                         ->required()
                                         ->prefix('Rp. ')
                                         ->default(0)
-                                        ->rule(function ($get) {
-                                            $categoryId = $get('id_category');
-                                            if (!$categoryId) return ['required'];
-
-                                            $limit = \App\Models\Category::find($categoryId)?->limit ?? 0;
-                                            // method untuk kasih limit amount 
-                                            return [
-                                                'required',
-                                                'lte:' . $limit, 
-                                            ];
-                                        })
+                                        ->reactive()
+                                        ->rule(fn ($get) => [
+                                            'required',
+                                            'lte:' . (\App\Models\Category::find($get('id_category'))?->limit ?? 0),
+                                        ])
                                         ->helperText(fn ($get) => $get('id_category')
                                             ? 'Max: Rp. ' . number_format(\App\Models\Category::find($get('id_category'))->limit, 0, ',', '.')
                                             : ''
-                                    ),
+                                        )
+                                        ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                            $allDetails = $get('../../details') ?? [];
+                                            $total = collect($allDetails)->sum(fn($d) => (int) ($d['amount'] ?? 0));
+                                            $set('../../total_amount', $total);
+                                        }),
+
                                     FileUpload::make('image')
                                         ->label('Image URL')
                                         ->disk('public')
                                         ->directory('reinbursement')
                                         ->image(),
+
                                     Textarea::make('note')
                                         ->maxLength(65535)
                                         ->columnSpanFull(),
-                                ])->columns(2),
+                                ]),
                         ])
                         ->columnSpanFull(),
+
                 Section::make('Detail Payment')
                         ->description('Add reinbursement payment here')
                         ->icon(Heroicon::CurrencyDollar)
@@ -113,7 +117,12 @@ class ReinbursementTRXForm
                                                 })->pluck('name', 'id')
                                             )  
                                         ->columnSpanFull(),
-                                ])->columns(2)->maxItems(1),
+                                ])->columns(2)
+                                ->maxItems(1)
+                                ->reactive()
+                                ->afterStateUpdated(function ($state, $get, $set) {
+                                    $set('total_amount', collect($state)->sum('amount'));
+                                }),
                         ])
                         ->columnSpanFull(),
                 Hidden::make('id_employe')
@@ -122,12 +131,17 @@ class ReinbursementTRXForm
                     ->default(function () {
                         return Auth::user()->id_employe;
                     }),
+
                 TextInput::make('total_amount')
+                    ->label('Total Amount')
                     ->required()
                     ->numeric()
-                    ->prefix('Rp. ')
                     ->default(0)
+                    ->mask(RawJs::make('$money($input)'))
+                    ->stripCharacters(',')
+                    ->prefix("Rp")
                     ->columnSpanFull(),
+
                 Textarea::make('note')
                     ->columnSpanFull(),
                 Select::make('status_id')
