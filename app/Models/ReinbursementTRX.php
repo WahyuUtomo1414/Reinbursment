@@ -19,6 +19,11 @@ class ReinbursementTRX extends Model
         return $this->belongsTo(Employe::class, 'id_employe');
     }
 
+    public function approve()
+    {
+        return $this->belongsTo(Employe::class, 'approve_by');
+    }
+
     public function account()
     {
         return $this->belongsTo(Account::class, 'id_account');

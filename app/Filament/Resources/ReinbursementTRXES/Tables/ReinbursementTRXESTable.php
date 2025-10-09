@@ -25,15 +25,28 @@ class ReinbursementTRXESTable
                 TextColumn::make('total_amount')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('approve_by')
+                    ->searchable()
+                    ->placeholder('-')
+                    ->getStateUsing(function ($record) {
+                        return optional($record->approve)->name ?: '-';
+                    }),
+                TextColumn::make('approve_at')
+                    ->date()
+                    ->placeholder('-')
+                    ->sortable(),
                 TextColumn::make('status.name')
                     ->badge('info')
                     ->sortable(),
                 TextColumn::make('createdBy.name')
-                    ->label('Created By'),
+                    ->label('Created By')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updatedBy.name')
-                    ->label("Updated by"),
+                    ->label("Updated by")
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('deletedBy.name')
-                    ->label("Deleted by"),
+                    ->label("Deleted by")
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
