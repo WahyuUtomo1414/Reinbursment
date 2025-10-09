@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             StatusSeeder::class,
             DivisionSeeder::class,
             RoleSeeder::class,
+            AccountSeeder::class,
     ]);
     }
 }
