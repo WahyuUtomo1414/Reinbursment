@@ -20,6 +20,8 @@ class EmployeInfolist
                 TextEntry::make('personal_number'),
                 TextEntry::make('position.name')
                     ->label('Position'),
+                TextEntry::make('divisi.name')
+                    ->label('Division'),
                 IconEntry::make('active')
                     ->boolean(),
                 

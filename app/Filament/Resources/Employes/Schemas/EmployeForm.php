@@ -24,6 +24,10 @@ class EmployeForm
                     ->required()
                     ->options(\App\Models\Position::all()->pluck('name', 'id')->toArray())
                     ->label('Position'),
+                Select::make('id_division')
+                    ->required()
+                    ->options(\App\Models\Division::all()->pluck('name', 'id')->toArray())
+                    ->label('Division'),
                 Toggle::make('active')
                     ->required(),
                 Section::make('User Account')

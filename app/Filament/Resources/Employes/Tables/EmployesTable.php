@@ -29,6 +29,10 @@ class EmployesTable
                     ->sortable()
                     ->searchable()
                     ->label('Position'),
+                TextColumn::make('divisi.name')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Division'),
                 IconColumn::make('active')
                     ->boolean(),
                 TextColumn::make('createdBy.name')
