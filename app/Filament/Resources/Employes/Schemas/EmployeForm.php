@@ -35,7 +35,6 @@ class EmployeForm
 
                         TextInput::make('email')
                             ->email()
-                            ->unique(ignoreRecord: true)
                             ->required(),
 
                         TextInput::make('password')
