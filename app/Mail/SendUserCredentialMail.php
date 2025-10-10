@@ -11,49 +11,20 @@ use Illuminate\Queue\SerializesModels;
 
 class SendUserCredentialMail extends Mailable
 {
-        use Queueable, SerializesModels;
+    use Queueable, SerializesModels;
 
     public $user;
     public $plainPassword;
 
-    /**
-     * Buat instance baru.
-     */
     public function __construct($user, $plainPassword)
     {
         $this->user = $user;
         $this->plainPassword = $plainPassword;
     }
 
-    /**
-     * Definisi envelope (judul email, dll)
-     */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Your Account Login Information',
-        );
-    }
-
-    /**
-     * Definisi konten email
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'email.user_credentials',
-            with: [
-                'user' => $this->user,
-                'plainPassword' => $this->plainPassword,
-            ],
-        );
-    }
-
-    /**
-     * Attachment (optional)
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this->subject('Your Account Login Information')
+            ->view('email.user_credentials');
     }
 }
