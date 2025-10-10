@@ -15,7 +15,7 @@
     </ul>
 
     <p>You can log in to the system using the link below:</p>
-    <p><a href="{{ url('/login') }}">Login Here</a></p>
+    <p><a href="{{ env('APP_URL') }}/admin/login">Login Here</a></p>
 
     <p>Thank you!</p>
 </body>
