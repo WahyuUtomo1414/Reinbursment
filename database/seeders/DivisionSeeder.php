@@ -15,22 +15,22 @@ class DivisionSeeder extends Seeder
     {
         DB::table('division')->insert([
             [
-                'division_master' => 1,
+                'division_master' => null,
                 'name' => 'Finance',
                 'description' => 'Handles company financial operations and budgeting.',
             ],
             [
-                'division_master' => 1,
+                'division_master' => null,
                 'name' => 'IT',
                 'description' => 'Responsible for information technology systems and support.',
             ],
             [
-                'division_master' => 1,
+                'division_master' => null,
                 'name' => 'Business',
                 'description' => 'Focuses on business strategy, partnerships, and growth.',
             ],
             [
-                'division_master' => 1,
+                
                 'name' => 'Marketing',
                 'description' => 'Manages branding, campaigns, and market research.',
             ],
