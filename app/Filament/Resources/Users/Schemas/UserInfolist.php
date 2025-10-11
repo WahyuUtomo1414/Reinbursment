@@ -20,6 +20,8 @@ class UserInfolist
                     ->label('Email address'),
                 TextEntry::make('employe.name')
                     ->label('Employee Name'),
+                TextEntry::make('roles.name')
+                    ->label('Role'),
                 IconEntry::make('active')
                     ->boolean(),
                 
