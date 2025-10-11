@@ -29,8 +29,10 @@ class UserFactory extends Factory
             'name' => $name,
             'email' => $faker->unique()->safeEmail() ?? "{$emailBase}@gmail.com",
             'password' => Hash::make('12345678'),
+            'roles' => 3,
             'id_employe' => Employe::factory(),
             'active' => true,
+            'created_at' => now(),
         ];
     }
 }

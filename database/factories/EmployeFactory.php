@@ -25,9 +25,10 @@ class EmployeFactory extends Factory
             'name' => $faker->name(),
             'nik' => $faker->unique()->numerify('###############'), // 15 digit angka
             'personal_number' => $faker->unique()->numerify('PN-########'),
-            'id_position' => $faker->numberBetween(2, 8),
-            'id_division' => $faker->numberBetween(2, 4),
+            'id_position' => \App\Models\Position::inRandomOrder()->value('id') ?? \App\Models\Position::factory(),
+            'id_division' => \App\Models\Division::inRandomOrder()->value('id') ?? \App\Models\Division::factory(),
             'active' => true,
+            'created_at' => now(),
         ];
     }
 }
