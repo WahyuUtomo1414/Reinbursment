@@ -16,23 +16,35 @@ class PositionSeeder extends Seeder
         $positions = [
             [
                 'name' => 'Super Admin',
-                'description' => 'User dengan akses penuh ke sistem',
+                'description' => 'User with full access and control over the system.',
             ],
             [
-                'name' => 'HRD',
-                'description' => 'User yang bertanggung jawab atas manajemen sumber daya manusia',
+                'name' => 'Admin',
+                'description' => 'User responsible for managing and maintaining the system operations.',
             ],
             [
-                'name' => 'Finance',
-                'description' => 'User yang menangani keuangan perusahaan',
+                'name' => 'Staff',
+                'description' => 'Regular user who performs daily operational tasks within the company.',
             ],
             [
-                'name' => 'Employee',
-                'description' => 'User biasa dengan akses terbatas',
+                'name' => 'Manager',
+                'description' => 'User responsible for overseeing team performance and project execution.',
             ],
             [
-                'name' => 'Admin IT',
-                'description' => 'User yang mengelola sistem dan infrastruktur IT',
+                'name' => 'Supervisor',
+                'description' => 'User who supervises and ensures smooth workflow within their department.',
+            ],
+            [
+                'name' => 'Lead',
+                'description' => 'User who leads a small team and coordinates work among team members.',
+            ],
+            [
+                'name' => 'Support',
+                'description' => 'User who provides technical or customer support to ensure smooth operations.',
+            ],
+            [
+                'name' => 'Legal',
+                'description' => 'User who handles legal documents, compliance, and corporate governance.',
             ],
         ];
 
@@ -42,5 +54,6 @@ class PositionSeeder extends Seeder
                 'description' => $position['description'],
             ]);
         }
+
     }
 }
