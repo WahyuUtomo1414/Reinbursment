@@ -14,31 +14,14 @@ class CreateEmploye extends CreateRecord
 
     protected ?string $plainPassword = null;
 
-    /**
-     * Simpan password plain sebelum disimpan (karena di-hash)
-     */
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $this->plainPassword = $data['user']['password'] ?? null;
-        return $data;
-    }
+        $plainPassword = $data['user']['password'] ?? null;
 
-    /**
-     * Kirim email setelah record & relasi berhasil disimpan
-     */
-    protected function afterSave(): void
-    {
-        $employe = $this->record;
-
-        if ($employe->user && $this->plainPassword) {
-            Mail::to($employe->user->email)
-                ->send(new SendUserCredentialMail($employe->user, $this->plainPassword));
-
-            Notification::make()
-                ->title('Employee Created')
-                ->body('Login credentials have been sent to ' . $employe->user->email)
-                ->success()
-                ->send();
+        if ($plainPassword) {
+            $data['user']['password_plain'] = $plainPassword;
         }
+
+        return $data;
     }
 }

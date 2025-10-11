@@ -16,15 +16,45 @@ class SendUserCredentialMail extends Mailable
     public $user;
     public $plainPassword;
 
+    /**
+     * Create a new message instance.
+     */
     public function __construct($user, $plainPassword)
     {
         $this->user = $user;
         $this->plainPassword = $plainPassword;
     }
 
-    public function build()
+    /**
+     * Get the message envelope (subject, from, etc).
+     */
+    public function envelope(): Envelope
     {
-        return $this->subject('Your Account Login Information')
-            ->view('emails.user_credentials');
+        return new Envelope(
+            subject: 'Your Account Login Information',
+        );
+    }
+
+    /**
+     * Get the message content (view + data).
+     */
+    public function content(): Content
+    {
+        return new Content(
+            view: 'emails.user_credentials',
+            with: [
+                'name' => $this->user->name,
+                'email' => $this->user->email,
+                'password' => $this->plainPassword,
+            ],
+        );
+    }
+
+    /**
+     * Attachments (optional).
+     */
+    public function attachments(): array
+    {
+        return [];
     }
 }
