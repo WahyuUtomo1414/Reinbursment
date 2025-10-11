@@ -25,6 +25,6 @@ class SendUserCredentialMail extends Mailable
     public function build()
     {
         return $this->subject('Your Account Login Information')
-            ->view('email.user_credentials');
+            ->view('emails.user_credentials');
     }
 }

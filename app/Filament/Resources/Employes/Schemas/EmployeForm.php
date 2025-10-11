@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Employes\Schemas;
 
+use Filament\Forms\Components\Hidden;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\TextInput;
@@ -40,6 +42,10 @@ class EmployeForm
                         TextInput::make('email')
                             ->email()
                             ->required(),
+
+                        Hidden::make('roles')
+                            ->label('Role')
+                            ->default(2),
 
                         TextInput::make('password')
                             ->password()
