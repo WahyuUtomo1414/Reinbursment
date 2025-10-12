@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\ReinbursementTRXES\Pages;
 
-use App\Filament\Resources\ReinbursementTRXES\ReinbursementTRXResource;
 use Filament\Actions\CreateAction;
+use Filament\Actions\ExportAction;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Exports\ReinbursementTRXExporter;
+use App\Filament\Resources\ReinbursementTRXES\ReinbursementTRXResource;
 
 class ListReinbursementTRXES extends ListRecords
 {
@@ -14,6 +16,9 @@ class ListReinbursementTRXES extends ListRecords
     {
         return [
             CreateAction::make(),
+            ExportAction::make()
+                ->exporter(ReinbursementTRXExporter::class)
+                ->columnMapping(false),
         ];
     }
 }
