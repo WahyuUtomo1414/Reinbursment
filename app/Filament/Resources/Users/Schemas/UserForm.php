@@ -33,9 +33,12 @@ class UserForm
                     ->searchable()
                     ->required(),
                 Select::make('roles')
-                    ->label('Role')
+                    ->label('Roles')
                     ->relationship('roles', 'name')
-                    ->visible(in_array(Auth::user()->roles->first()->id ?? null, [4])),
+                    ->multiple()
+                    ->preload()
+                    ->required()
+                    ->visible(in_array(Auth::user()->roles->first()->id ?? null, [6])),
                 TextInput::make('password')
                     ->password()
                     ->required(),
