@@ -99,18 +99,24 @@ class ReinbursementTRXInfolist
                 TextEntry::make('note')
                     ->placeholder('-')
                     ->columnSpanFull(),
-                TextEntry::make('approve_by')
-                    ->label('Approved By')
-                    ->placeholder('-')
-                    ->getStateUsing(function ($record) {
-                        return optional($record->approve)->name ?? '-';
-                    }),
-                TextEntry::make('approve_at')
-                    ->date()
-                    ->placeholder('-'),
-                TextEntry::make('status.name')
-                    ->label('Status')
-                    ->badge(),
+
+                Section::make('Status Reimbursement')
+                    ->icon(Heroicon::CheckBadge)
+                    ->schema([
+                        TextEntry::make('status.name')
+                            ->label('Status')
+                            ->badge(),
+                        TextEntry::make('approve_by')
+                            ->label('Approved By')
+                            ->placeholder('-')
+                            ->getStateUsing(function ($record) {
+                                return optional($record->approve)->name ?? '-';
+                            }),
+                        TextEntry::make('approve_at')
+                            ->date()
+                            ->placeholder('-'),
+                    ])->columns(3)->columnSpanFull(),
+
                 Section::make('Data Tracked')
                     ->icon(Heroicon::ArchiveBox)
                     ->schema([
