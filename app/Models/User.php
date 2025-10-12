@@ -55,6 +55,6 @@ class User extends Authenticatable
 
     public function employe()
     {
-        return $this->belongsTo(Employe::class, 'id_employe');
+        return $this->belongsTo(Employe::class, 'id_employe', 'id');
     }
 }

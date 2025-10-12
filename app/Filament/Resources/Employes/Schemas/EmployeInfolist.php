@@ -24,6 +24,16 @@ class EmployeInfolist
                     ->label('Division'),
                 IconEntry::make('active')
                     ->boolean(),
+
+                Section::make('Data User')
+                    ->relationship('user')
+                    ->schema([
+                        TextEntry::make('name'),
+                        TextEntry::make('email')
+                            ->label('Email address'),
+                        TextEntry::make('employe.name')
+                            ->label('Employee Name'),
+                    ])->columns(3)->columnSpanFull()->collapsible(),
                 
                 Section::make('Data Information')
                     ->schema([

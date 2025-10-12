@@ -33,7 +33,7 @@ class EmployeForm
                 Toggle::make('active')
                     ->required(),
                 Section::make('User Account')
-                    ->relationship('user') // relasi hasOne ke User
+                    ->relationship('user') 
                     ->schema([
                         TextInput::make('name')
                             ->label('Username')
@@ -49,8 +49,11 @@ class EmployeForm
 
                         TextInput::make('password')
                             ->password()
+                            ->label('Reset Password')
                             ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
-                            ->required(fn (string $context): bool => $context === 'create'),
+                            ->required(fn (string $context): bool => $context === 'create')
+                            ->visible(fn (string $context): bool => $context === 'edit'),
+
                     ])
                     ->columns(3)
                     ->columnSpanFull(),
