@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\ReinbursementTRXES\Pages;
 
-use App\Filament\Resources\ReinbursementTRXES\ReinbursementTRXResource;
 use Filament\Actions\EditAction;
+use Illuminate\Support\Facades\Auth;
 use Filament\Resources\Pages\ViewRecord;
+use App\Filament\Resources\ReinbursementTRXES\ReinbursementTRXResource;
 
 class ViewReinbursementTRX extends ViewRecord
 {
@@ -14,7 +15,10 @@ class ViewReinbursementTRX extends ViewRecord
     {
         return [
             EditAction::make()
-                ->visible(fn ($record) => $record->status_id !== 8),
+                ->visible(fn ($record) => 
+                    !in_array(Auth::user()?->roles?->first()?->name ?? '', ['employee']) 
+                    && $record->status_id === 8
+                ),
         ];
     }
 }

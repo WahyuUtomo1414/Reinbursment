@@ -2,15 +2,16 @@
 
 namespace App\Filament\Resources\ReinbursementTRXES\Tables;
 
+use Filament\Tables\Table;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Illuminate\Support\Facades\Auth;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
-use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
-use Filament\Tables\Table;
+use Filament\Actions\ForceDeleteBulkAction;
 
 class ReinbursementTRXESTable
 {
@@ -66,7 +67,10 @@ class ReinbursementTRXESTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make()
-                    ->visible(fn ($record) => $record->status_id !== 8),
+                    ->visible(fn ($record) => 
+                        !in_array(Auth::user()?->roles?->first()?->name ?? '', ['employee']) 
+                        && $record->status_id === 8
+                    ),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
