@@ -15,29 +15,34 @@ class AdminOverview extends StatsOverviewWidget
     protected function getStats(): array
     {
         $employe = Employe::count();
+        $reinburmentPending = ReinbursementTRX::where('status_id', 7)->count();
         $reinburment = ReinbursementTRX::count();
         $reinbursementTotal = ReinbursementTRX::sum('total_amount');
 
         $formattedTotal = 'Rp. ' . number_format($reinbursementTotal, 0, ',', '.');
 
         return [
-            Stat::make('Employees', $employe)
-                ->description('↑ 32k increase')
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
+            Stat::make('Total Employe', $employe)
+                ->description('Employe')
+                ->descriptionIcon('heroicon-m-user-group')
                 ->color('success')
-                ->chart([3, 4, 6, 8, 12, 14, 18, 20, 24]),
+                ->chart([7, 2, 10, 3, 15, 4, 17]),
 
-            Stat::make('Reimbursements', $reinburment)
-                ->description('↓ 7% decrease')
-                ->descriptionIcon('heroicon-m-arrow-trending-down')
+            Stat::make('Total Reimbursements', $reinburment)
+                ->description('Reimbursement')
+                ->descriptionIcon('heroicon-m-document-currency-dollar')
+                ->color('warning')
+                ->chart([7, 2, 10, 3, 15, 4, 17]),
+            
+            Stat::make('Reimbursements Pending', $reinburmentPending)
+                ->description('Reimbursement')
+                ->descriptionIcon('heroicon-m-document-currency-dollar')
                 ->color('danger')
-                ->chart([10, 9, 8, 7, 6, 5, 4, 4, 3]),
+                ->chart([7, 2, 10, 3, 15, 4, 17]),
 
             Stat::make('Total Amount', $formattedTotal)
-                ->description('↑ 3% increase')
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
-                ->color('success')
-                ->chart([10, 12, 13, 15, 16, 18, 19, 20, 23]),
+                ->color('info')
+                ->chart([7, 2, 10, 3, 15, 4, 17]),
         ];
     }
 }
