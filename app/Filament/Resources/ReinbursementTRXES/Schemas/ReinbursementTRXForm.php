@@ -93,39 +93,39 @@ class ReinbursementTRXForm
                         ->columnSpanFull(),
 
                 Section::make('Detail Payment')
-                        ->description('Add reinbursement payment here')
-                        ->icon(Heroicon::CurrencyDollar)
-                        ->schema([
-                            Repeater::make('payment')
-                                ->label('Payment')
-                                ->relationship('paymentReinbursement')
-                                ->schema([
-                                    FileUpload::make('image')
-                                        ->label('Image Payment')
-                                        ->disk('public')
-                                        ->directory('reinbursement_payment')
-                                        ->image()
-                                        ->columnSpanFull(),
-                                    Textarea::make('note')
-                                        ->columnSpanFull(),
-                                    Select::make('status_id')
-                                        ->required()
-                                        ->label('Status')
-                                        ->default(4)
-                                        ->options(
-                                                Status::whereHas('statusType', function ($query) {
-                                                    $query->where('id', 2);
-                                                })->pluck('name', 'id')
-                                            )  
-                                        ->columnSpanFull(),
-                                ])->columns(2)
-                                ->maxItems(1)
-                                ->reactive()
-                                ->afterStateUpdated(function ($state, $get, $set) {
-                                    $set('total_amount', collect($state)->sum('amount'));
-                                }),
-                        ])
-                        ->columnSpanFull(),
+                    ->description('Add reinbursement payment here')
+                    ->icon(Heroicon::CurrencyDollar)
+                    ->schema([
+                        Repeater::make('payment')
+                            ->label('Payment')
+                            ->relationship('paymentReinbursement')
+                            ->schema([
+                        FileUpload::make('image')
+                            ->label('Image Payment')
+                            ->disk('public')
+                            ->directory('reinbursement_payment')
+                            ->image()
+                            ->columnSpanFull(),
+                        Textarea::make('note')
+                            ->columnSpanFull(),
+                        Select::make('status_id')
+                            ->required()
+                            ->label('Status')
+                            ->default(4)
+                            ->options(
+                                    Status::whereHas('statusType', function ($query) {
+                                        $query->where('id', 2);
+                                    })->pluck('name', 'id')
+                                )  
+                            ->columnSpanFull(),
+                            ])->columns(2)
+                            ->maxItems(1),
+                    ])
+                    ->columnSpanFull()
+                    ->visible(fn ($record) => 
+                        in_array(Auth::user()?->roles?->first()?->name ?? '', ['finance']) 
+                            && $record->status_id === 8
+                        ),
                 Hidden::make('id_employe')
                     ->label('Employee')
                     ->required()
