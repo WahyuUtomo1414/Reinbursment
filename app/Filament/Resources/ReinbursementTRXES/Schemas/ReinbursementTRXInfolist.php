@@ -3,11 +3,8 @@
 namespace App\Filament\Resources\ReinbursementTRXES\Schemas;
 
 use Filament\Schemas\Schema;
-use App\Models\ReinbursementTRX;
 use Filament\Support\Icons\Heroicon;
 use Filament\Schemas\Components\Grid;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ImageEntry;
@@ -69,8 +66,8 @@ class ReinbursementTRXInfolist
                     ->description('Reimbursement payments')
                     ->icon(Heroicon::CurrencyDollar)
                     ->schema([
-                        Repeater::make('paymentReinbursement')
-                            ->relationship('paymentReinbursement')
+                        RepeatableEntry::make('paymentReinbursement')
+                            ->label('Payment')
                             ->schema([
                                 ImageEntry::make('image')
                                     ->label('Image')
@@ -80,15 +77,21 @@ class ReinbursementTRXInfolist
 
                                 TextEntry::make('note')
                                     ->label('Note')
-                                    ->disabled()
-                                    ->getStateUsing(fn ($record) => $record->note ?? '-'),
+                                    ->getStateUsing(fn ($record) => $record->note ?? '-')
+                                    ->disabled(),
 
-                                TextEntry::make('status.name')
+                                TextEntry::make('status_id')
                                     ->label('Status')
-                                    ->disabled()
-                                    ->getStateUsing(fn ($record) => optional($record->status)->name ?? '-'),
+                                    ->getStateUsing(fn ($record) => optional($record->status)->name ?? '-')
+                                    ->disabled(),
+                                
+                                TextEntry::make('CreatedBy.name')
+                                    ->label('Payment By')
+                                    ->getStateUsing(fn ($record) => $record->CreatedBy->name ?? '-')
+                                    ->disabled(),
                             ])
                             ->columns(2)
+                            ->columnSpanFull()
                             ->disabled(),
                     ])
                     ->columnSpanFull(),

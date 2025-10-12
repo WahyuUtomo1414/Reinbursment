@@ -16,6 +16,6 @@ class ReinbursementPayment extends Model
 
     public function reinbursement_trx()
     {
-        return $this->hasOne(ReinbursementTRX::class, 'id_reinbursement_trx');
+        return $this->belongsTo(ReinbursementTRX::class, 'id_reinbursement_trx');
     }
 }
