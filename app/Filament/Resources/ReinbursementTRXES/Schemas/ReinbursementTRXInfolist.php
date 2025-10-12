@@ -21,6 +21,8 @@ class ReinbursementTRXInfolist
             ->components([
                 TextEntry::make('account.account_name')
                     ->label('Account Name'),
+                TextEntry::make('account.account_number')
+                    ->label('Account Number'),
                 TextEntry::make('employe.name')
                     ->label('Employe Name'),
 
