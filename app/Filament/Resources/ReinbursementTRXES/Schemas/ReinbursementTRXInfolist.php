@@ -63,7 +63,6 @@ class ReinbursementTRXInfolist
                     ->columnSpanFull(),
                     
                 Section::make('Detail Payment')
-                    ->description('Reimbursement payments')
                     ->icon(Heroicon::CurrencyDollar)
                     ->schema([
                         RepeatableEntry::make('paymentReinbursement')
@@ -83,14 +82,10 @@ class ReinbursementTRXInfolist
                                 TextEntry::make('status_id')
                                     ->label('Status')
                                     ->getStateUsing(fn ($record) => optional($record->status)->name ?? '-')
-                                    ->disabled(),
-                                
-                                TextEntry::make('CreatedBy.name')
-                                    ->label('Payment By')
-                                    ->getStateUsing(fn ($record) => $record->CreatedBy->name ?? '-')
-                                    ->disabled(),
+                                    ->disabled()
+                                    ->badge(),
                             ])
-                            ->columns(2)
+                            ->columns(3)
                             ->columnSpanFull()
                             ->disabled(),
                     ])

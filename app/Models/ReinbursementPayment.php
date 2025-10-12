@@ -18,4 +18,9 @@ class ReinbursementPayment extends Model
     {
         return $this->belongsTo(ReinbursementTRX::class, 'id_reinbursement_trx');
     }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id');
+    }
 }
