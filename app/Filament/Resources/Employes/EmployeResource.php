@@ -2,22 +2,23 @@
 
 namespace App\Filament\Resources\Employes;
 
-use App\Filament\Resources\Employes\Pages\CreateEmploye;
-use App\Filament\Resources\Employes\Pages\EditEmploye;
-use App\Filament\Resources\Employes\Pages\ListEmployes;
-use App\Filament\Resources\Employes\Pages\ViewEmploye;
-use App\Filament\Resources\Employes\Schemas\EmployeForm;
-use App\Filament\Resources\Employes\Schemas\EmployeInfolist;
-use App\Filament\Resources\Employes\Tables\EmployesTable;
-use App\Models\Employe;
+use UnitEnum;
 use BackedEnum;
-use Filament\Resources\Resource;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
+use App\Models\Employe;
 use Filament\Tables\Table;
+use Filament\Schemas\Schema;
+use Filament\Resources\Resource;
+use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use UnitEnum;
+use App\Filament\Resources\Employes\Pages\EditEmploye;
+use App\Filament\Resources\Employes\Pages\ViewEmploye;
+use App\Filament\Resources\Employes\Pages\ListEmployes;
+use App\Filament\Resources\Employes\Pages\CreateEmploye;
+use App\Filament\Resources\Employes\Schemas\EmployeForm;
+use App\Filament\Resources\Employes\Tables\EmployesTable;
+use App\Filament\Resources\Employes\Schemas\EmployeInfolist;
 
 class EmployeResource extends Resource
 {
@@ -63,11 +64,22 @@ class EmployeResource extends Resource
         ];
     }
 
-    public static function getRecordRouteBindingEloquentQuery(): Builder
+    public static function getEloquentQuery(): Builder
     {
-        return parent::getRecordRouteBindingEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+        $query = parent::getEloquentQuery()
+            ->withoutGlobalScopes([SoftDeletingScope::class]);
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            $roleName = $user?->roles?->first()?->name ?? '';
+
+            if ($roleName !== 'super_admin') {
+                $query->whereHas('user', function ($q) use ($user) {
+                    $q->where('id', $user->id);
+                });
+            }
+        }
+
+        return $query;
     }
 }
