@@ -59,7 +59,9 @@ class PendingReinbursment extends TableWidget
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
+                ViewAction::make()
+                    ->url(fn ($record) => url("/admin/reinbursement-t-r-x-e-s/{$record->id}"))
+                    ->openUrlInNewTab(false),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
