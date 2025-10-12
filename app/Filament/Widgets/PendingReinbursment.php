@@ -2,12 +2,14 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Status;
 use Filament\Tables\Table;
 use App\Models\ReinbursementTRX;
 use Filament\Actions\ViewAction;
 use Filament\Widgets\TableWidget;
 use Filament\Actions\BulkActionGroup;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 
@@ -53,7 +55,12 @@ class PendingReinbursment extends TableWidget
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('status_id')
+                    ->label('Status')
+                    ->options(fn () => Status::where('status_type_id', 3)->pluck('name', 'id'))
+                    ->searchable()
+                    ->preload()
+                    ->placeholder('Pilih status...'),
             ])
             ->headerActions([
                 //
