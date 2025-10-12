@@ -36,7 +36,8 @@ class ReinbursementTRXForm
                             ->toArray();
                     })
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->visible(in_array(Auth::user()?->roles?->first()?->name, ['employee'])),
 
                     Section::make('Detail Reinbursement')
                         ->description('Add reinbursement details here')
