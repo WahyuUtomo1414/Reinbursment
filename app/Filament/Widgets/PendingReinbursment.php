@@ -18,6 +18,8 @@ class PendingReinbursment extends TableWidget
     use HasWidgetShield;
 
     protected int | string | array $columnSpan = 'full';
+
+    protected static ?int $sort = 3;
     
     public function table(Table $table): Table
     {
