@@ -30,6 +30,8 @@ class ReinbursementTRXResource extends Resource
 
     protected static ?string $navigationLabel = 'Reinbursement';
 
+    protected static ?string $pluralModelLabel = 'Reinbursement';
+
     protected static ?string $recordTitleAttribute = 'Reinbursement';
 
     public static function form(Schema $schema): Schema
