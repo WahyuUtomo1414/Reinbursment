@@ -65,7 +65,8 @@ class ReinbursementTRXESTable
             ])
             ->recordActions([
                 ViewAction::make(),
-                EditAction::make(),
+                EditAction::make()
+                    ->visible(fn ($record) => $record->status_id !== 8),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

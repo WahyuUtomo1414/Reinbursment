@@ -13,7 +13,8 @@ class ViewReinbursementTRX extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            EditAction::make(),
+            EditAction::make()
+                ->visible(fn ($record) => $record->status_id !== 8),
         ];
     }
 }
