@@ -77,12 +77,12 @@ class ReinbursementTRXResource extends Resource
         $roles = $user->roles->pluck('name')->toArray(); // ambil semua role nama
 
         // Super Admin & Finance bisa lihat semua
-        if (in_array('super_admin', $roles) || in_array('Finance', $roles)) {
+        if (in_array('super_admin', $roles) || in_array('finance', $roles)) {
             return $query;
         }
 
         // Division Master
-        if (in_array('Division Master', $roles)) {
+        if (in_array('division-master', $roles)) {
             $userDivisionId = $user->employe?->id_divisi;
             if ($userDivisionId) {
                 $query->whereHas('createdBy.employe', function ($q) use ($userDivisionId) {
