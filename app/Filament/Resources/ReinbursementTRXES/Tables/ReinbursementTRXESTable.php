@@ -10,6 +10,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Actions\ForceDeleteBulkAction;
 
@@ -74,6 +75,12 @@ class ReinbursementTRXESTable
             ])
             ->filters([
                 TrashedFilter::make(),
+                SelectFilter::make('status_id')
+                    ->label('Status')
+                    ->relationship('status', 'name')
+                    ->preload()
+                    ->searchable()
+                    ->indicator('Status'),
             ])
             ->recordActions([
                 ViewAction::make(),
