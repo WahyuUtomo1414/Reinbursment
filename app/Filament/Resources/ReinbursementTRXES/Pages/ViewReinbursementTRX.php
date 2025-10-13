@@ -17,7 +17,7 @@ class ViewReinbursementTRX extends ViewRecord
             EditAction::make()
                 ->visible(fn ($record) => 
                     !in_array(Auth::user()?->roles?->first()?->name ?? '', ['employee']) 
-                    && $record->status_id === 8
+                    && $record->status_id == 8
                 ),
         ];
     }
