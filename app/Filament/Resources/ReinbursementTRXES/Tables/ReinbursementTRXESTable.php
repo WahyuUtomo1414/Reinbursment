@@ -68,8 +68,10 @@ class ReinbursementTRXESTable
                 ViewAction::make(),
                 EditAction::make()
                     ->visible(fn ($record) => 
-                        !in_array(Auth::user()?->roles?->first()?->name ?? '', ['employee']) 
-                        && $record->status_id === 8
+                        !(
+                            Auth::user()?->roles?->first()?->name === 'employee' 
+                            && $record->status_id === 8
+                        )
                     ),
             ])
             ->toolbarActions([
