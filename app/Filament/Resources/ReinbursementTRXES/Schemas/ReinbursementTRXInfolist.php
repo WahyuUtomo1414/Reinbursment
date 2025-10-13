@@ -105,7 +105,17 @@ class ReinbursementTRXInfolist
                     ->schema([
                         TextEntry::make('status.name')
                             ->label('Status')
-                            ->badge(),
+                            ->badge()
+                            ->color(fn ($state) => match ($state) {
+                                'Pending' => 'warning',
+                                'Approve' => 'success',
+                                'Reject'  => 'danger',
+                            })
+                            ->icon(fn ($state) => match ($state) {
+                                'Pending' => 'heroicon-o-clock',
+                                'Approve' => 'heroicon-o-check-circle',
+                                'Reject'  => 'heroicon-o-x-circle', 
+                            }),
                         TextEntry::make('approve_by')
                             ->label('Approved By')
                             ->placeholder('-')
