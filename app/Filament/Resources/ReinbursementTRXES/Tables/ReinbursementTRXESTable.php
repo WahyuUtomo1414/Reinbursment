@@ -37,8 +37,21 @@ class ReinbursementTRXESTable
                     ->placeholder('-')
                     ->sortable(),
                 TextColumn::make('status.name')
-                    ->badge('info')
-                    ->sortable(),
+                    ->label('Status')
+                    ->sortable()
+                    ->badge()
+                    ->color(fn ($state) => match ($state) {
+                        'Pending' => 'warning',
+                        'Approve' => 'success',
+                        'Reject'  => 'danger',
+                        default   => 'gray',
+                    })
+                    ->icon(fn ($state) => match ($state) {
+                        'Pending' => 'heroicon-o-clock',       // ikon jam
+                        'Approve' => 'heroicon-o-check-circle',// ikon centang
+                        'Reject'  => 'heroicon-o-x-circle',    // ikon silang
+                        default   => 'heroicon-o-question-mark-circle',
+                    }),
                 TextColumn::make('createdBy.name')
                     ->label('Created By')
                     ->toggleable(isToggledHiddenByDefault: true),
