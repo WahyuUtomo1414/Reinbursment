@@ -19,6 +19,7 @@ use App\Filament\Resources\ReinbursementTRXES\Pages\ListReinbursementTRXES;
 use App\Filament\Resources\ReinbursementTRXES\Schemas\ReinbursementTRXForm;
 use App\Filament\Resources\ReinbursementTRXES\Tables\ReinbursementTRXESTable;
 use App\Filament\Resources\ReinbursementTRXES\Schemas\ReinbursementTRXInfolist;
+use App\Filament\Resources\ReinbursementTRXES\Widgets\ReinbursementStatsOverview;
 
 class ReinbursementTRXResource extends Resource
 {
@@ -98,6 +99,13 @@ class ReinbursementTRXResource extends Resource
         $query->where('created_by', $user->id);
 
         return $query;
+    }
+
+    public static function getHeaderWidgets(): array
+    {
+        return [
+            ReinbursementStatsOverview::class,
+        ];
     }
 
     public static function getNavigationBadge(): ?string
