@@ -21,7 +21,6 @@ use App\Filament\Resources\ReinbursementTRXES\ReinbursementTRXResource\Widgets\R
 use App\Filament\Resources\ReinbursementTRXES\Schemas\ReinbursementTRXForm;
 use App\Filament\Resources\ReinbursementTRXES\Tables\ReinbursementTRXESTable;
 use App\Filament\Resources\ReinbursementTRXES\Schemas\ReinbursementTRXInfolist;
-use App\Filament\Resources\ReinbursementTRXES\Widgets\ReinbursementStatsOverview;
 
 class ReinbursementTRXResource extends Resource
 {
@@ -108,10 +107,10 @@ class ReinbursementTRXResource extends Resource
         return static::getModel()::count();
     }
 
-    // public static function getWidgets(): array
-    // {
-    //     return [
-    //         WidgetsReinburmentOverview::class,
-    //     ];
-    // }
+    public static function getWidgets(): array
+    {
+        return [
+            WidgetsReinburmentOverview::class,
+        ];
+    }
 }

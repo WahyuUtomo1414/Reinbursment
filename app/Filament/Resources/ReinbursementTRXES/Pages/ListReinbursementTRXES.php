@@ -9,10 +9,13 @@ use Illuminate\Support\Facades\Auth;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
 use App\Filament\Exports\ReinbursementTRXExporter;
+use Filament\Pages\Concerns\ExposesTableToWidgets;
 use App\Filament\Resources\ReinbursementTRXES\ReinbursementTRXResource;
 
 class ListReinbursementTRXES extends ListRecords
 {
+    use ExposesTableToWidgets;
+    
     protected static string $resource = ReinbursementTRXResource::class;
 
     protected function getHeaderActions(): array
@@ -48,5 +51,10 @@ class ListReinbursementTRXES extends ListRecords
         }
 
         return $tabs;
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return ReinbursementTRXResource::getWidgets();
     }
 }
