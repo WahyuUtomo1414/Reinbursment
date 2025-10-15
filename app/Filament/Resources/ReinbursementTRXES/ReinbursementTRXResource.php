@@ -11,11 +11,13 @@ use Filament\Resources\Resource;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Widgets\ReinburmentOverview;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ReinbursementTRXES\Pages\EditReinbursementTRX;
 use App\Filament\Resources\ReinbursementTRXES\Pages\ViewReinbursementTRX;
 use App\Filament\Resources\ReinbursementTRXES\Pages\CreateReinbursementTRX;
 use App\Filament\Resources\ReinbursementTRXES\Pages\ListReinbursementTRXES;
+use App\Filament\Resources\ReinbursementTRXES\ReinbursementTRXResource\Widgets\ReinburmentOverview as WidgetsReinburmentOverview;
 use App\Filament\Resources\ReinbursementTRXES\Schemas\ReinbursementTRXForm;
 use App\Filament\Resources\ReinbursementTRXES\Tables\ReinbursementTRXESTable;
 use App\Filament\Resources\ReinbursementTRXES\Schemas\ReinbursementTRXInfolist;
@@ -101,15 +103,15 @@ class ReinbursementTRXResource extends Resource
         return $query;
     }
 
-    public static function getHeaderWidgets(): array
-    {
-        return [
-            ReinbursementStatsOverview::class,
-        ];
-    }
-
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
+
+    // public static function getWidgets(): array
+    // {
+    //     return [
+    //         WidgetsReinburmentOverview::class,
+    //     ];
+    // }
 }
