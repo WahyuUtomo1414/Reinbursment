@@ -88,7 +88,10 @@ class ReinbursementTRXForm
                                     Textarea::make('note')
                                         ->maxLength(65535)
                                         ->columnSpanFull(),
-                                ]),
+                                ])->disabled(fn ($record) => 
+                                    !(
+                                        Auth::user()?->roles?->first()?->name === 'employee'
+                                    )),
                         ])
                         ->columnSpanFull(),
 
