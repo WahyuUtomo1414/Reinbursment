@@ -33,7 +33,7 @@ class ReinbursementTRXExporter extends Exporter
                 ->formatStateUsing(fn ($state) => 'Rp ' . number_format($state, 0, ',', '.')),
 
             ExportColumn::make('status.name')
-                ->label('Status'),
+                ->label('Status Reinbursment'),
 
             ExportColumn::make('note')
                 ->label('Note'),
@@ -44,6 +44,12 @@ class ReinbursementTRXExporter extends Exporter
             ExportColumn::make('approve_at')
                 ->label('Approved At')
                 ->formatStateUsing(fn ($state) => $state ? Carbon::parse($state)->format('d/m/Y H:i') : '-'),
+
+            ExportColumn::make('paymentReinbursement.status.name')
+                ->label('Status Payment'),
+
+            ExportColumn::make('paymentReinbursement.createdBy.name')
+                ->label('Payment By'),
 
             ExportColumn::make('created_at')
                 ->label('Created At')
