@@ -21,11 +21,14 @@ class ReinbursementTRXESTable
         return $table
             ->columns([
                 TextColumn::make('account.account_number')  
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('employe.name')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('total_amount')
                     ->numeric()
+                    ->searchable()
                     ->prefix('Rp. ')
                     ->sortable(),
                 TextColumn::make('approve_by')
@@ -56,6 +59,7 @@ class ReinbursementTRXESTable
                 TextColumn::make('paymentReinbursement.status.name')
                     ->label('Status Payment')
                     ->sortable()
+                    ->searchable()
                     ->badge()
                     ->placeholder('-')
                     ->color(fn ($state) => match ($state) {
@@ -71,7 +75,8 @@ class ReinbursementTRXESTable
 
                 TextColumn::make('paymentReinbursement.createdBy.name')
                     ->label('Paid By')
-                    ->placeholder('-'),
+                    ->placeholder('-')
+                    ->searchable(),
                 
                 TextColumn::make('createdBy.name')
                     ->label('Created By')
