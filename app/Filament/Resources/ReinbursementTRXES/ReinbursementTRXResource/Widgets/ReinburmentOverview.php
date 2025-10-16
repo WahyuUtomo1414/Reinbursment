@@ -33,20 +33,11 @@ class ReinburmentOverview extends StatsOverviewWidget
         $totalAmount = $tableQuery->sum('total_amount');
 
         return [
-            Stat::make('Total Reimbursements', $totalReimbursements)
-                ->description('Reimbursement')
-                ->descriptionIcon('heroicon-m-document-currency-dollar')
-                ->color('warning'),
+            Stat::make('Total Reimbursements', $totalReimbursements),
 
-            Stat::make('Total Reimbursements Paid', $totalReimbursementsPaid)
-                ->description('Reimbursement Paid')
-                ->descriptionIcon('heroicon-m-document-currency-dollar')
-                ->color('success'),
+            Stat::make('Total Reimbursements Paid', $totalReimbursementsPaid),
 
-            Stat::make('Total Amount', 'Rp ' . number_format($totalAmount, 0, ',', '.'))
-                ->color('info')
-                ->description('For Total Reimbursement')
-                ->descriptionIcon('heroicon-m-document-currency-dollar'),
+            Stat::make('Total Amount', 'Rp ' . number_format($totalAmount, 0, ',', '.')),
         ];
     }
 }
