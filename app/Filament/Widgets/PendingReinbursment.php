@@ -32,6 +32,7 @@ class PendingReinbursment extends TableWidget
                     ->sortable(),
                 TextColumn::make('total_amount')
                     ->numeric()
+                    ->prefix('Rp. ')
                     ->sortable(),
                 TextColumn::make('approve_by')
                     ->searchable()
