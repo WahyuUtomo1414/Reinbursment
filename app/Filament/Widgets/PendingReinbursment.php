@@ -27,23 +27,28 @@ class PendingReinbursment extends TableWidget
             ->query(fn (): Builder => ReinbursementTRX::query())
             ->columns([
                 TextColumn::make('account.account_number')  
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('employe.name')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('total_amount')
                     ->numeric()
                     ->prefix('Rp. ')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('approve_by')
                     ->searchable()
                     ->placeholder('-')
                     ->getStateUsing(function ($record) {
                         return optional($record->approve)->name ?: '-';
-                    }),
+                    })
+                    ->searchable(),
                 TextColumn::make('approve_at')
                     ->date()
                     ->placeholder('-')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('status.name')
                     ->badge('info')
                     ->sortable()
@@ -56,7 +61,8 @@ class PendingReinbursment extends TableWidget
                         'Pending' => 'heroicon-o-clock',
                         'Approve' => 'heroicon-o-check-circle',
                         'Reject'  => 'heroicon-o-x-circle',
-                    }),
+                    })
+                    ->searchable(),
                 TextColumn::make('createdBy.name')
                     ->label('Created By')
                     ->toggleable(isToggledHiddenByDefault: true),
