@@ -11,6 +11,7 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -52,12 +53,20 @@ class ReinbursementTRXForm
                                         ->label('Category')
                                         ->options(fn () => \App\Models\Category::all()->pluck('name', 'id'))
                                         ->required()
-                                        ->reactive(),
+                                        ->reactive()
+                                        ->disabled(fn ($record) => 
+                                            !(
+                                                Auth::user()?->roles?->first()?->name === 'employee'
+                                            )),
 
                                     TextInput::make('name')
                                         ->label('Reinbursement Name')
                                         ->required()
-                                        ->maxLength(255),
+                                        ->maxLength(255)
+                                        ->disabled(fn ($record) => 
+                                            !(
+                                                Auth::user()?->roles?->first()?->name === 'employee'
+                                            )),
 
                                     TextInput::make('amount')
                                         ->label('Amount')
@@ -74,24 +83,58 @@ class ReinbursementTRXForm
                                             : ''
                                         )
                                         ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                            // Ambil semua detail data
                                             $allDetails = $get('../../details') ?? [];
-                                            $total = collect($allDetails)->sum(fn($d) => (int) ($d['amount'] ?? 0));
+
+                                            // Hitung total hanya jika 'active' == true
+                                            $total = collect($allDetails)
+                                                ->filter(fn($d) => ($d['active'] ?? false) == true)
+                                                ->sum(fn($d) => (int) ($d['amount'] ?? 0));
+
                                             $set('../../total_amount', $total);
-                                        }),
+                                        })
+                                        ->disabled(fn ($record) => 
+                                            !(
+                                                Auth::user()?->roles?->first()?->name === 'employee'
+                                            )
+                                        ),
 
                                     FileUpload::make('image')
                                         ->label('Image URL')
                                         ->disk('public')
                                         ->directory('reinbursement')
-                                        ->image(),
+                                        ->image()
+                                        ->disabled(fn ($record) => 
+                                            !(
+                                                Auth::user()?->roles?->first()?->name === 'employee'
+                                            )),
 
                                     Textarea::make('note')
                                         ->maxLength(65535)
-                                        ->columnSpanFull(),
-                                ])->disabled(fn ($record) => 
-                                    !(
-                                        Auth::user()?->roles?->first()?->name === 'employee'
-                                    )),
+                                        ->columnSpanFull()
+                                        ->disabled(fn ($record) => 
+                                            !(
+                                                Auth::user()?->roles?->first()?->name === 'employee'
+                                            )),
+                                    Toggle::make('active')
+                                        ->label('Is Approve')
+                                        ->required()
+                                        ->default(true)
+                                        ->reactive()
+                                        ->afterStateUpdated(function ($state, callable $set, callable $get) {
+                                            $allDetails = $get('../../details') ?? [];
+
+                                            $total = collect($allDetails)
+                                                ->filter(fn($d) => ($d['active'] ?? false) == true)
+                                                ->sum(fn($d) => (int) ($d['amount'] ?? 0));
+
+                                            $set('../../total_amount', $total);
+                                        })
+                                        ->disabled(fn ($record) => 
+                                            !(
+                                                Auth::user()?->roles?->first()?->name != 'employee'
+                                            )),
+                                ])
                         ])
                         ->columnSpanFull(),
 
@@ -162,7 +205,7 @@ class ReinbursementTRXForm
                             })->pluck('name', 'id')
                         )  
                     ->columnSpanFull()
-                    ->visible(in_array(Auth::user()?->roles?->first()?->name, ['division_master'])),
+                    ->visible(in_array(Auth::user()?->roles?->first()?->name, ['division-master'])),
                 Hidden::make('approve_by'),
                 Hidden::make('approve_at'),
             ]);
