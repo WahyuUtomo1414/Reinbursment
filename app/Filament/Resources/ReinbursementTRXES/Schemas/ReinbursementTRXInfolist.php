@@ -84,6 +84,10 @@ class ReinbursementTRXInfolist
                                     ->getStateUsing(fn ($record) => optional($record->status)->name ?? '-')
                                     ->disabled()
                                     ->badge(),
+
+                                TextEntry::make('createdBy.name')
+                                    ->label('Payment By')
+                                    ->placeholder('-'),
                             ])
                             ->columns(3)
                             ->columnSpanFull()

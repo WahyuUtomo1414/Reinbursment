@@ -119,7 +119,11 @@ class ReinbursementTRXForm
                                         )  
                                     ->columnSpanFull(),
                             ])->columns(2)
-                            ->maxItems(1),
+                            ->maxItems(1)
+                            ->mutateRelationshipDataBeforeCreateUsing(function (array $data): array {
+                                $data['created_by'] = Auth::id();
+                                return $data;
+                            }),
                     ])
                     ->columnSpanFull()
                     ->visible(fn ($record) => 
