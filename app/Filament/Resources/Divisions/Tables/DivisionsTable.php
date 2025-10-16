@@ -19,7 +19,8 @@ class DivisionsTable
         return $table
             ->columns([
                 TextColumn::make('employe.name')
-                    ->label('Division Master'),
+                    ->label('Division Master')
+                    ->searchable(),
                 TextColumn::make('name')
                     ->searchable(),
                 IconColumn::make('active')
