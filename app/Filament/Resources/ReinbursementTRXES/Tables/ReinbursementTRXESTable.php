@@ -39,7 +39,7 @@ class ReinbursementTRXESTable
                     ->placeholder('-')
                     ->sortable(),
                 TextColumn::make('status.name')
-                    ->label('Status')
+                    ->label('Status Reinbursment')
                     ->sortable()
                     ->badge()
                     ->color(fn ($state) => match ($state) {
@@ -52,6 +52,27 @@ class ReinbursementTRXESTable
                         'Approve' => 'heroicon-o-check-circle',
                         'Reject'  => 'heroicon-o-x-circle',
                     }),
+                
+                TextColumn::make('paymentReinbursement.status.name')
+                    ->label('Status Payment')
+                    ->sortable()
+                    ->badge()
+                    ->placeholder('-')
+                    ->color(fn ($state) => match ($state) {
+                        'Process' => 'warning',
+                        'Paid' => 'success',
+                        'Rejected'  => 'danger',
+                    })
+                    ->icon(fn ($state) => match ($state) {
+                        'Process' => 'heroicon-o-clock',
+                        'Paid' => 'heroicon-o-check-circle',
+                        'Rejected'  => 'heroicon-o-x-circle',
+                    }),
+
+                TextColumn::make('paymentReinbursement.createdBy.name')
+                    ->label('Paid By')
+                    ->placeholder('-'),
+                
                 TextColumn::make('createdBy.name')
                     ->label('Created By')
                     ->toggleable(isToggledHiddenByDefault: true),
