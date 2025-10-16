@@ -25,6 +25,11 @@ class ReinburmentOverview extends StatsOverviewWidget
         $tableQuery = $this->getPageTableQuery();
 
         $totalReimbursements = $tableQuery->count();
+        $totalReimbursementsPaid = $tableQuery
+            ->whereHas('paymentReinbursement', function ($query) {
+                $query->where('status_id', 5);
+            })
+            ->count();
         $totalAmount = $tableQuery->sum('total_amount');
 
         return [
@@ -32,6 +37,11 @@ class ReinburmentOverview extends StatsOverviewWidget
                 ->description('Reimbursement')
                 ->descriptionIcon('heroicon-m-document-currency-dollar')
                 ->color('warning'),
+
+            Stat::make('Total Reimbursements Paid', $totalReimbursementsPaid)
+                ->description('Reimbursement Paid')
+                ->descriptionIcon('heroicon-m-document-currency-dollar')
+                ->color('success'),
 
             Stat::make('Total Amount', 'Rp ' . number_format($totalAmount, 0, ',', '.'))
                 ->color('info')
