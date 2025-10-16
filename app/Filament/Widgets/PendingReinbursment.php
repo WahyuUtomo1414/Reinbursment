@@ -45,7 +45,17 @@ class PendingReinbursment extends TableWidget
                     ->sortable(),
                 TextColumn::make('status.name')
                     ->badge('info')
-                    ->sortable(),
+                    ->sortable()
+                    ->color(fn ($state) => match ($state) {
+                        'Pending' => 'warning',
+                        'Approve' => 'success',
+                        'Reject'  => 'danger',
+                    })
+                    ->icon(fn ($state) => match ($state) {
+                        'Pending' => 'heroicon-o-clock',
+                        'Approve' => 'heroicon-o-check-circle',
+                        'Reject'  => 'heroicon-o-x-circle',
+                    }),
                 TextColumn::make('createdBy.name')
                     ->label('Created By')
                     ->toggleable(isToggledHiddenByDefault: true),
