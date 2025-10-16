@@ -156,13 +156,13 @@ class ReinbursementTRXForm
                 Select::make('status_id')
                     ->required()
                     ->label('Status')
-                    ->default(7)
                     ->options(
                             Status::whereHas('statusType', function ($query) {
                                 $query->where('id', 3);
                             })->pluck('name', 'id')
                         )  
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->visible(in_array(Auth::user()?->roles?->first()?->name, ['division_master'])),
                 Hidden::make('approve_by'),
                 Hidden::make('approve_at'),
             ]);
