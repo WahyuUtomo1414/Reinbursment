@@ -2,13 +2,14 @@
 
 namespace App\Filament\Pages;
 
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Select;
-use Filament\Pages\Dashboard as BaseDashboard;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Schema;
 use App\Models\Status;
+use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Select;
+use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\DatePicker;
+use Filament\Pages\Dashboard as BaseDashboard;
+use Filament\Schemas\Components\Utilities\Get;
 
 class Dashboard extends BaseDashboard
 {
@@ -37,7 +38,10 @@ class Dashboard extends BaseDashboard
                             ->searchable(),
                     ])
                     ->columns(3)
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->visible(fn ($record) => 
+                        in_array(Auth::user()?->roles?->first()?->name ?? '', ['super_admin', 'employee']) 
+                        ),
             ]);
     }
 }
