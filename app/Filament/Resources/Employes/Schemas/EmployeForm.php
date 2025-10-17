@@ -18,88 +18,41 @@ class EmployeForm
             ->components([
                 TextInput::make('name')
                     ->label('Full Name')
+                    ->required(),
+
+                TextInput::make('email')
+                    ->label('Email')
+                    ->email()
                     ->required()
                     ->validationMessages([
-                        'required' => 'The name field is required.',
+                        'required' => 'The email field is required.',
+                        'email' => 'Please enter a valid email address.',
+                        'unique' => 'This email is already registered.',
                     ]),
 
                 TextInput::make('nik')
                     ->label('NIK')
                     ->required()
-                    ->unique(ignoreRecord: true)
-                    ->validationMessages([
-                        'required' => 'The NIK field is required.',
-                        'unique' => 'This NIK is already registered.',
-                    ]),
+                    ->unique(ignoreRecord: true),
 
                 TextInput::make('personal_number')
                     ->label('Personal Number')
                     ->required()
-                    ->unique(ignoreRecord: true)
-                    ->validationMessages([
-                        'required' => 'The personal number field is required.',
-                        'unique' => 'This personal number already exists.',
-                    ]),
+                    ->unique(ignoreRecord: true),
 
                 Select::make('id_position')
                     ->label('Position')
                     ->required()
-                    ->options(\App\Models\Position::all()->pluck('name', 'id')->toArray())
-                    ->validationMessages([
-                        'required' => 'Please select a position.',
-                    ]),
+                    ->options(\App\Models\Position::pluck('name', 'id')),
 
                 Select::make('id_division')
                     ->label('Division')
                     ->required()
-                    ->options(\App\Models\Division::all()->pluck('name', 'id')->toArray())
-                    ->validationMessages([
-                        'required' => 'Please select a division.',
-                    ]),
+                    ->options(\App\Models\Division::pluck('name', 'id')),
 
                 Toggle::make('active')
                     ->label('Active')
-                    ->required(),
-
-                Section::make('User Account')
-                    ->relationship('user')
-                    ->schema([
-                        TextInput::make('name')
-                            ->label('Username')
-                            ->required()
-                            ->validationMessages([
-                                'required' => 'The username field is required.',
-                            ]),
-
-                        TextInput::make('email')
-                            ->email()
-                            ->required()
-                            ->validationMessages([
-                                'required' => 'The email field is required.',
-                                'email' => 'Please enter a valid email address.',
-                            ]),
-
-                        Select::make('roles')
-                            ->label('Roles')
-                            ->relationship('roles', 'name')
-                            ->multiple()
-                            ->default(2)
-                            ->preload()
-                            ->required()
-                            ->visible(in_array(Auth::user()->roles->first()->id ?? null, [6])),
-
-                        TextInput::make('password')
-                            ->password()
-                            ->label('Reset Password')
-                            ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
-                            ->required(fn (string $context): bool => $context === 'create')
-                            ->visible(fn (string $context): bool => $context === 'edit')
-                            ->validationMessages([
-                                'required' => 'The password field is required when creating a new user.',
-                            ]),
-                    ])
-                    ->columns(3)
-                    ->columnSpanFull(),
+                    ->default(true),
             ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Employes\Pages;
 
+use App\Models\User;
 use App\Models\Employe;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -19,20 +20,24 @@ class CreateEmploye extends CreateRecord
     protected function afterCreate(): void
     {
         $employe = $this->record;
-        $user = $employe->user;
 
-        if ($user) {
+        // Cek apakah sudah punya user
+        if (!$employe->user) {
             $plainPassword = Str::random(10);
 
-            $user->update([
+            $user = User::create([
+                'name' => $employe->name,
+                'email' => $employe->email,
                 'password' => bcrypt($plainPassword),
+                'id_employe' => $employe->id,
             ]);
 
-            Mail::to($user->email)->send(
-                new SendUserCredentialMail(
-                    $user,
-                    $plainPassword
-                )
+            // Assign role default (optional)
+            $user->assignRole('employee');
+
+            // Kirim email kredensial
+            Mail::to($employe->email)->send(
+                new \App\Mail\SendUserCredentialMail($user, $plainPassword)
             );
         }
     }
