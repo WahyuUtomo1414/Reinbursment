@@ -57,4 +57,11 @@ class AdminOverview extends StatsOverviewWidget
                 ->color('info'),
         ];
     }
+
+    protected int|string|array $columnSpan = 6;
+
+    protected function getColumns(): int
+    {
+        return 2;
+    }
 }
