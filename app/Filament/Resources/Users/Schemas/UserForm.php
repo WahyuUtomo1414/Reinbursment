@@ -31,7 +31,11 @@ class UserForm
                     ->label('Employee')
                     ->options(Employe::all()->pluck('name', 'id'))
                     ->searchable()
-                    ->required(),
+                    ->required()
+                    ->disabled(fn ($record) => 
+                        !(
+                            Auth::user()?->roles?->first()?->name != 'employee'
+                        )),
                 Select::make('roles')
                     ->label('Roles')
                     ->relationship('roles', 'name')
@@ -41,7 +45,10 @@ class UserForm
                     ->visible(in_array(Auth::user()->roles->first()->id ?? null, [6])),
                 TextInput::make('password')
                     ->password()
-                    ->required(),
+                    ->required()
+                    ->revealable()
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn (string $context): bool => $context === 'create'),
                 Toggle::make('active')
                     ->required(),
             ]);
