@@ -48,7 +48,9 @@ class ReinbursementTRXInfolist
                                     ->label('Image')
                                     ->disk('public')
                                     ->imagesize(140)
-                                    ->getStateUsing(fn ($record) => $record->image ? asset('storage/' . $record->image) : '-')
+                                    ->disk('public')
+                                    ->getStateUsing(fn ($record) => $record->image ? asset('storage/' . $record->image) : null)
+                                    ->url(fn ($record) => $record->image ? asset('storage/' . $record->image) : null, shouldOpenInNewTab: true)
                                     ->disabled(),
                                 
                                 TextEntry::make('note')
@@ -71,8 +73,9 @@ class ReinbursementTRXInfolist
                                 ImageEntry::make('image')
                                     ->label('Image')
                                     ->disk('public')
-                                    ->getStateUsing(fn ($record) => $record->image ? asset('storage/' . $record->image) : '-')
-                                    ->disabled(),
+                                    ->getStateUsing(fn ($record) => $record->image ? asset('storage/' . $record->image) : null)
+                                    ->url(fn ($record) => $record->image ? asset('storage/' . $record->image) : null, shouldOpenInNewTab: true)
+                                    ->disabled(false),
 
                                 TextEntry::make('note')
                                     ->label('Note')
