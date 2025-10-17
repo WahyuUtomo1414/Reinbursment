@@ -40,7 +40,7 @@ class EmployeOverview extends StatsOverviewWidget
             ->when($statusId, fn($q) => $q->where('status_id', $statusId));
 
         $lastReimbursement = $query->latest('created_at')->first();
-        $lastStatus = $lastReimbursement?->status?->name ?? 'No Reimbursement Yet';
+        $lastStatus = $lastReimbursement?->status?->name ?? 'No Reimbursement';
         $statusDate = $lastReimbursement?->created_at?->format('d M Y') ?? '-';
 
         $reimbursementCount = $query->count();
