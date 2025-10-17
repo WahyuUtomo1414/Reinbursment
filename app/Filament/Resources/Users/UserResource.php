@@ -84,6 +84,16 @@ class UserResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        if (!Auth::check()) {
+            return null;
+        }
+
+        $user = Auth::user();
+
+        if ($user->roles->contains('name', 'super_admin')) {
+            return static::getModel()::count();
+        }
+
+        return null;
     }
 }
