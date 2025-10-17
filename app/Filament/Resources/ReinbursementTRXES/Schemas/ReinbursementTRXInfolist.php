@@ -6,6 +6,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
@@ -57,6 +58,9 @@ class ReinbursementTRXInfolist
                                     ->label('Note')
                                     ->getStateUsing(fn ($record) => $record->note ?? '-')
                                     ->disabled(),
+                                
+                                IconEntry::make('active')
+                                    ->boolean(),
                             ])
                             ->columns(5)
                             ->disabled(),
