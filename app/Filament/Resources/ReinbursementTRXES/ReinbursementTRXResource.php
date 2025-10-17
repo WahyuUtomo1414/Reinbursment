@@ -74,32 +74,31 @@ class ReinbursementTRXResource extends Resource
             ->withoutGlobalScopes([SoftDeletingScope::class]);
 
         if (!Auth::check()) {
-            return $query; // jika tidak login, tetap kembalikan query kosong
+            return $query->whereRaw('1=0');
         }
 
         $user = Auth::user();
-        $roles = $user->roles->pluck('name')->toArray(); // ambil semua role nama
+        $roles = $user->roles->pluck('name')->toArray();
 
-        // Super Admin & Finance bisa lihat semua
         if (in_array('super_admin', $roles) || in_array('finance', $roles)) {
             return $query;
         }
 
-        // Division Master
         if (in_array('division-master', $roles)) {
-            $userDivisionId = $user->employe?->id_divisi;
+            $userDivisionId = $user->employe?->id_division;
+
             if ($userDivisionId) {
                 $query->whereHas('createdBy.employe', function ($q) use ($userDivisionId) {
-                    $q->where('id_divisi', $userDivisionId);
+                    $q->where('id_division', $userDivisionId);
                 });
+            } else {
+                $query->whereRaw('1=0');
             }
+
             return $query;
         }
 
-        // Employee biasa
-        $query->where('created_by', $user->id);
-
-        return $query;
+        return $query->where('created_by', $user->id);
     }
 
     public static function getNavigationBadge(): ?string
