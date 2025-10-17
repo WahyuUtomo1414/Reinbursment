@@ -103,7 +103,36 @@ class ReinbursementTRXResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        if (!Auth::check()) {
+            return null;
+        }
+
+        $user = Auth::user();
+        $roles = $user->roles->pluck('name')->toArray();
+
+        $query = static::getModel()::query();
+
+        if (in_array('super_admin', $roles) || in_array('finance', $roles)) {
+            return $query->count();
+        }
+
+        if (in_array('division-master', $roles)) {
+            $userDivisionId = $user->employe?->id_division;
+
+            if ($userDivisionId) {
+                $query->whereHas('createdBy.employe', function ($q) use ($userDivisionId) {
+                    $q->where('id_division', $userDivisionId);
+                });
+            } else {
+                return '0';
+            }
+
+            return (string) $query->count();
+        }
+
+        $query->where('created_by', $user->id);
+
+        return (string) $query->count();
     }
 
     public static function getWidgets(): array
