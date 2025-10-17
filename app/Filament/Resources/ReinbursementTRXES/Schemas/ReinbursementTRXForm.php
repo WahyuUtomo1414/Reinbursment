@@ -130,10 +130,9 @@ class ReinbursementTRXForm
 
                                             $set('../../total_amount', $total);
                                         })
-                                        ->disabled(fn ($record) => 
-                                            !(
-                                                Auth::user()?->roles?->first()?->name != 'employee'
-                                            )),
+                                        ->disabled(fn () =>
+                                            in_array(Auth::user()?->roles?->first()?->name, ['employee', 'finance'])
+                                        )
                                 ])
                         ])
                         ->columnSpanFull(),
