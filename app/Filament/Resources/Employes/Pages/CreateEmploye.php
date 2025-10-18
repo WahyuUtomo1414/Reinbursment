@@ -36,7 +36,7 @@ class CreateEmploye extends CreateRecord
             $user->assignRole('employee');
 
             // Kirim email kredensial
-            Mail::to($employe->email)->send(
+            Mail::to($employe->email)->queue(
                 new \App\Mail\SendUserCredentialMail($user, $plainPassword)
             );
         }
