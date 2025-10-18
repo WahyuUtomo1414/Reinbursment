@@ -28,20 +28,30 @@ class PendingReinbursment extends TableWidget
         return $table
             ->query(function (): Builder {
                 $user = Auth::user();
-                // filter data
-                if (!$user || !$user->id_employe) {
+
+                if (!$user) {
                     return ReinbursementTRX::query()->whereRaw('1=0');
                 }
 
-                $employe = Employe::find($user->id_employe);
-                $divisionId = $employe?->id_division;
+                $roles = $user->roles->pluck('name')->toArray();
 
-                if (!$divisionId) {
-                    return ReinbursementTRX::query()->whereRaw('1=0');
+                if (in_array('super_admin', $roles) || in_array('finance', $roles)) {
+                    return ReinbursementTRX::query();
                 }
 
+                if (in_array('division-master', $roles)) {
+                    $employe = Employe::find($user->id_employe);
+                    $divisionId = $employe?->id_division;
+
+                    if (!$divisionId) {
+                        return ReinbursementTRX::query()->whereRaw('1=0');
+                    }
+
+                    return ReinbursementTRX::query()
+                        ->whereHas('employe', fn ($q) => $q->where('id_division', $divisionId));
+                }
                 return ReinbursementTRX::query()
-                    ->whereHas('employe', fn ($q) => $q->where('id_division', $divisionId));
+                    ->where('created_by', $user->id);
             })
 
             ->columns([
