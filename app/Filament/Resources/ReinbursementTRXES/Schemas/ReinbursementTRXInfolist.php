@@ -60,6 +60,7 @@ class ReinbursementTRXInfolist
                                     ->disabled(),
                                 
                                 IconEntry::make('active')
+                                    ->label('Is Approve')
                                     ->boolean(),
                             ])
                             ->columns(5)
