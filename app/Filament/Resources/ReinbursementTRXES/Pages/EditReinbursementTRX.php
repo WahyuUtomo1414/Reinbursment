@@ -28,7 +28,7 @@ class EditReinbursementTRX extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         if (($data['status_id'] ?? null) == 8) {
-            $data['approve_by'] = Auth::user()->name;
+            $data['approve_by'] = Auth::user()->id_employe;
             $data['approve_at'] = now();
         }
 

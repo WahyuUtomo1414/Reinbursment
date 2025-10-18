@@ -128,7 +128,7 @@ class ReinbursementTRXInfolist
                                 'Approve' => 'heroicon-o-check-circle',
                                 'Reject'  => 'heroicon-o-x-circle', 
                             }),
-                        TextEntry::make('approve_by')
+                        TextEntry::make('approve.name')
                             ->label('Approved By')
                             ->placeholder('-'),
                         TextEntry::make('approve_at')

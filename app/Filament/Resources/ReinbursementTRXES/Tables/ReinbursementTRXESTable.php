@@ -31,7 +31,7 @@ class ReinbursementTRXESTable
                     ->searchable()
                     ->prefix('Rp. ')
                     ->sortable(),
-                TextColumn::make('approve_by')
+                TextColumn::make('approve.name')
                     ->searchable()
                     ->placeholder('-'),
                 TextColumn::make('approve_at')

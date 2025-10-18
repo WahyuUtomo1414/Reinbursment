@@ -56,7 +56,7 @@ class PendingReinbursment extends TableWidget
                     ->prefix('Rp. ')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('approve_by')
+                TextColumn::make('approve.name')
                     ->searchable()
                     ->placeholder('-')
                     ->searchable(),
