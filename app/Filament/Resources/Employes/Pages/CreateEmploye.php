@@ -28,7 +28,7 @@ class CreateEmploye extends CreateRecord
             $user = User::create([
                 'name' => $employe->name,
                 'email' => $employe->email,
-                'password' => bcrypt($plainPassword),
+                'password' => $plainPassword,
                 'id_employe' => $employe->id,
             ]);
 
