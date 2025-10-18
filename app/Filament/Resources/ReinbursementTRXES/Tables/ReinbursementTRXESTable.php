@@ -33,10 +33,7 @@ class ReinbursementTRXESTable
                     ->sortable(),
                 TextColumn::make('approve_by')
                     ->searchable()
-                    ->placeholder('-')
-                    ->getStateUsing(function ($record) {
-                        return optional($record->approve)->name ?: '-';
-                    }),
+                    ->placeholder('-'),
                 TextColumn::make('approve_at')
                     ->date()
                     ->placeholder('-')

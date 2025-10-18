@@ -59,9 +59,6 @@ class PendingReinbursment extends TableWidget
                 TextColumn::make('approve_by')
                     ->searchable()
                     ->placeholder('-')
-                    ->getStateUsing(function ($record) {
-                        return optional($record->approve)->name ?: '-';
-                    })
                     ->searchable(),
                 TextColumn::make('approve_at')
                     ->date()

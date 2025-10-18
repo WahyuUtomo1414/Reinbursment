@@ -129,10 +129,7 @@ class ReinbursementTRXInfolist
                             }),
                         TextEntry::make('approve_by')
                             ->label('Approved By')
-                            ->placeholder('-')
-                            ->getStateUsing(function ($record) {
-                                return optional($record->approve)->name ?? '-';
-                            }),
+                            ->placeholder('-'),
                         TextEntry::make('approve_at')
                             ->date()
                             ->placeholder('-'),
