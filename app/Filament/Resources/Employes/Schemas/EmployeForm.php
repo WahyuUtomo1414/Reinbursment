@@ -43,12 +43,18 @@ class EmployeForm
                 Select::make('id_position')
                     ->label('Position')
                     ->required()
-                    ->options(\App\Models\Position::pluck('name', 'id')),
+                    ->options(\App\Models\Position::pluck('name', 'id'))
+                    ->disabled(fn () =>
+                        in_array(Auth::user()?->roles?->first()?->name, ['employee', 'finance'])
+                    ),
 
                 Select::make('id_division')
                     ->label('Division')
                     ->required()
-                    ->options(\App\Models\Division::pluck('name', 'id')),
+                    ->options(\App\Models\Division::pluck('name', 'id'))
+                    ->disabled(fn () =>
+                        in_array(Auth::user()?->roles?->first()?->name, ['employee', 'finance'])
+                    ),
 
                 Toggle::make('active')
                     ->label('Active')
