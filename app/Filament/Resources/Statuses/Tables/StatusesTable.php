@@ -19,12 +19,15 @@ class StatusesTable
         return $table
             ->columns([
                 TextColumn::make('statusType.name')
-                    ->label('Status Type'),
+                    ->label('Status Type')
+                    ->searchable(),
                 TextColumn::make('name')
+                    ->searchable()
                     ->searchable(),
                 TextColumn::make('description')
                     ->limit(50)
-                    ->label('Description'),
+                    ->label('Description')
+                    ->searchable(),
                 IconColumn::make('active')
                     ->boolean(),
                 TextColumn::make('createdBy.name')
