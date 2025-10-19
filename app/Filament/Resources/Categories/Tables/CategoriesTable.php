@@ -23,9 +23,11 @@ class CategoriesTable
                 TextColumn::make('limit')
                     ->numeric()
                     ->prefix('Rp. ')
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('description')
                     ->limit(50)
+                    ->searchable()
                     ->label('Description'),
                 IconColumn::make('active')
                     ->boolean(),
