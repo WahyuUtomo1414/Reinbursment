@@ -30,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('Reinbursement')
+            ->passwordReset()
             ->colors([
                 'primary' => Color::Amber,
             ])
