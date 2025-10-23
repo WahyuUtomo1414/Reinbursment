@@ -24,6 +24,7 @@ class EmployeForm
                     ->label('Email')
                     ->email()
                     ->required()
+                    ->unique(ignoreRecord: true)
                     ->validationMessages([
                         'required' => 'The email field is required.',
                         'email' => 'Please enter a valid email address.',
