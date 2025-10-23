@@ -42,26 +42,25 @@ class AdminOverview extends StatsOverviewWidget
         return [
             Stat::make('Total Employee', $totalEmploye)
                 ->descriptionIcon('heroicon-m-user-group')
-                ->color('success'),
+                ->color('success')
+                ->chart([7, 2, 10, 3, 15, 4, 17]),
 
             Stat::make('Total Reimbursements', $totalReimbursement)
                 ->descriptionIcon('heroicon-m-document-currency-dollar')
-                ->color('warning'),
-
-            Stat::make('Pending Reimbursements', $totalPending)
-                ->descriptionIcon('heroicon-m-clock')
-                ->color('danger'),
+                ->color('warning')
+                ->chart([7, 2, 10, 3, 15, 4, 17]),
 
             Stat::make('Total Amount', $formattedAmount)
                 ->descriptionIcon('heroicon-m-banknotes')
-                ->color('info'),
+                ->color('info')
+                ->chart([7, 2, 10, 3, 15, 4, 17]),
         ];
     }
 
-    protected int|string|array $columnSpan = 2;
+    protected int|string|array $columnSpan = 3;
 
     protected function getColumns(): int
     {
-        return 2;
+        return 3;
     }
 }
