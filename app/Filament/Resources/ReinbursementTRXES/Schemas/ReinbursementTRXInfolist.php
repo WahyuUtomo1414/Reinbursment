@@ -152,6 +152,35 @@ class ReinbursementTRXInfolist
                                     ->placeholder('-'),
                             ]),
                 ])->columnSpanFull()->collapsible(),
+
+                Section::make('Data Tracked Division')
+                    ->icon(Heroicon::UserGroup)
+                    ->schema([
+                        Grid::make(3)
+                            ->schema([
+                                TextEntry::make('approve.name')
+                                    ->label('Approved By')
+                                    ->placeholder('-'),
+                                TextEntry::make('approve_at')
+                                    ->label('Approved At')
+                                    ->placeholder('-'),
+                            ]),
+                ])->columnSpanFull()->collapsible(),
+
+                Section::make('Data Tracked Payment')
+                    ->icon(Heroicon::CreditCard)
+                    ->schema([
+                        Grid::make(3)
+                            ->schema([
+                                TextEntry::make('paymentReinbursement.createdBy.name')
+                                    ->label('Created By')
+                                    ->placeholder('-'),
+                                TextEntry::make('paymentReinbursement.created_at')
+                                    ->label('Payment At')
+                                    ->placeholder('-'),
+                            ]),
+                ])->columnSpanFull()->collapsible(),
+
                 Section::make('Timestamps')
                     ->icon(Heroicon::Clock)
                     ->schema([
