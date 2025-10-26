@@ -109,11 +109,13 @@ class ReinbursementTRXESTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make()
-                    ->visible(fn ($record) => 
-                        !(
-                            Auth::user()?->roles?->first()?->name === 'employee' 
-                            && $record->status_id === 8
-                        )
+                ->visible(fn ($record) => 
+                    strtolower(Auth::user()?->roles?->first()?->name ?? '') === 'super_admin'
+                    || (
+                        strtolower(Auth::user()?->roles?->first()?->name ?? '') === 'finance'
+                        && ($record->status_id ?? null) == 8
+                    )
+                    || !in_array(strtolower(Auth::user()?->roles?->first()?->name ?? ''), ['finance', 'super_admin'])
                     ),
             ])
             ->toolbarActions([
