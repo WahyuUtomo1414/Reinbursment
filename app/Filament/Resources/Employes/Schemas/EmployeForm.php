@@ -24,12 +24,19 @@ class EmployeForm
                     ->label('Email')
                     ->email()
                     ->required()
-                    ->unique(ignoreRecord: true)
+                    ->unique()
+                    ->visibleOn('create')
                     ->validationMessages([
                         'required' => 'The email field is required.',
                         'email' => 'Please enter a valid email address.',
                         'unique' => 'This email is already registered.',
                     ]),
+
+                TextInput::make('email')
+                    ->label('Email')
+                    ->email()
+                    ->required()
+                    ->visibleOn('edit'),
 
                 TextInput::make('nik')
                     ->label('NIK')
