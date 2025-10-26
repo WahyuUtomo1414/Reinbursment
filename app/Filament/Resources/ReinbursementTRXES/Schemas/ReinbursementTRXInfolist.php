@@ -52,8 +52,12 @@ class ReinbursementTRXInfolist
                                     ->imagesize(140)
                                     ->disk('public')
                                     ->getStateUsing(fn ($record) => $record->image ? asset('storage/' . $record->image) : null)
-                                    ->url(fn ($record) => $record->image ? asset('storage/' . $record->image) : null, shouldOpenInNewTab: true)
-                                    ->disabled(),
+                                    ->disabled()
+                                    ->url(fn ($record) =>
+                                        $record->image
+                                            ? route('image.download', ['path' => $record->image])
+                                            : null
+                                    ),
                                 
                                 TextEntry::make('note')
                                     ->label('Note')
