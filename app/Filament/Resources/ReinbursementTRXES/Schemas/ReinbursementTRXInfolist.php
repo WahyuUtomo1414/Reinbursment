@@ -10,6 +10,7 @@ use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Components\Actions\Action;
 
 class ReinbursementTRXInfolist
 {
@@ -78,8 +79,14 @@ class ReinbursementTRXInfolist
                                 ImageEntry::make('image')
                                     ->label('Image')
                                     ->disk('public')
-                                    ->getStateUsing(fn ($record) => $record->image ? asset('storage/' . $record->image) : null)
-                                    ->url(fn ($record) => $record->image ? asset('storage/' . $record->image) : null, shouldOpenInNewTab: true)
+                                    ->getStateUsing(fn ($record) =>
+                                        $record->image ? asset('storage/' . $record->image) : null
+                                    )
+                                    ->url(fn ($record) =>
+                                        $record->image
+                                            ? route('image.download', ['path' => str_replace('storage/', '', $record->image)])
+                                            : null
+                                    )
                                     ->disabled(false),
 
                                 TextEntry::make('note')
