@@ -164,6 +164,19 @@ class ReinbursementTRXInfolist
                                 TextEntry::make('approve_at')
                                     ->label('Approved At')
                                     ->placeholder('-'),
+                                TextEntry::make('status.name')
+                                    ->label('Status')
+                                    ->badge()
+                                    ->color(fn ($state) => match ($state) {
+                                        'Pending' => 'warning',
+                                        'Approve' => 'success',
+                                        'Reject'  => 'danger',
+                                    })
+                                    ->icon(fn ($state) => match ($state) {
+                                        'Pending' => 'heroicon-o-clock',
+                                        'Approve' => 'heroicon-o-check-circle',
+                                        'Reject'  => 'heroicon-o-x-circle', 
+                                    }),
                             ]),
                 ])->columnSpanFull()->collapsible(),
 
@@ -178,6 +191,20 @@ class ReinbursementTRXInfolist
                                 TextEntry::make('paymentReinbursement.created_at')
                                     ->label('Payment At')
                                     ->placeholder('-'),
+                                TextEntry::make('paymentReinbursement.status.name')
+                                    ->label('Status Payment')
+                                    ->badge()
+                                    ->placeholder('-')
+                                    ->color(fn ($state) => match ($state) {
+                                        'Process' => 'warning',
+                                        'Paid' => 'success',
+                                        'Rejected'  => 'danger',
+                                    })
+                                    ->icon(fn ($state) => match ($state) {
+                                        'Process' => 'heroicon-o-clock',
+                                        'Paid' => 'heroicon-o-check-circle',
+                                        'Rejected'  => 'heroicon-o-x-circle',
+                                    }),
                             ]),
                 ])->columnSpanFull()->collapsible(),
 
