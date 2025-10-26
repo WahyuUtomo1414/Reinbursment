@@ -38,10 +38,7 @@ class Dashboard extends BaseDashboard
                             ->searchable(),
                     ])
                     ->columns(3)
-                    ->columnSpanFull()
-                    ->visible(fn ($record) => 
-                        in_array(Auth::user()?->roles?->first()?->name ?? '', ['super_admin', 'employee']) 
-                        ),
+                    ->columnSpanFull(),
             ]);
     }
 }
