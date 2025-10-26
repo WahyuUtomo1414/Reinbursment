@@ -74,6 +74,7 @@ class ReinbursementTRXForm
                                         ->prefix('Rp. ')
                                         ->default(0)
                                         ->reactive()
+                                        ->debounce(1500)
                                         ->rule(fn ($get) => [
                                             'required',
                                             'lte:' . (\App\Models\Category::find($get('id_category'))?->limit ?? 0),
