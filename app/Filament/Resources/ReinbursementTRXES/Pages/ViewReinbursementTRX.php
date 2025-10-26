@@ -16,10 +16,12 @@ class ViewReinbursementTRX extends ViewRecord
         return [
             EditAction::make()
                 ->visible(fn ($record) => 
-                    !(
-                        Auth::user()?->roles?->first()?->name === 'employee' 
-                        && $record->status_id === 8
+                    strtolower(Auth::user()?->roles?->first()?->name ?? '') === 'super_admin'
+                    || (
+                        strtolower(Auth::user()?->roles?->first()?->name ?? '') === 'finance'
+                        && ($record->status_id ?? null) == 8
                     )
+                    || !in_array(strtolower(Auth::user()?->roles?->first()?->name ?? ''), ['finance', 'super_admin'])
                 ),
         ];
     }
